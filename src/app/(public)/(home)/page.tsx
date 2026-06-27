@@ -94,53 +94,65 @@ export default async function HomePage() {
 
               <SearchForm />
 
+              <div className="flex flex-wrap items-center gap-2 mt-4">
+                <span className="text-xs text-[#6B6575]">Populer:</span>
+                {['Universitas Indonesia', 'ITB', 'UGM', 'Unair', 'UI', 'Binus'].map(q => (
+                  <a
+                    key={q}
+                    href={`/cari?q=${encodeURIComponent(q)}`}
+                    className="text-xs font-semibold text-[#033F85] bg-[#E8F0FB] px-3 py-1 rounded-full hover:bg-[#033F85] hover:text-white transition-colors"
+                  >
+                    {q}
+                  </a>
+                ))}
+              </div>
+
             </div>
 
             {/* ── RIGHT: 2×2 photo grid collage ── */}
-            <div className="relative h-[500px] hidden lg:block select-none">
+            <div className="hidden lg:flex items-center justify-center select-none">
+              {/* Fixed 480×480 canvas — photos are 220px, gap 20px, outer pad 10px */}
+              <div className="relative" style={{ width: 480, height: 480 }}>
 
-              {/* ── Blob decorations (behind photos) ── */}
-              {/* Blue blob — top-left */}
-              <div className="absolute" style={{ width: 160, height: 160, top: 20, left: 20, borderRadius: '50%', background: '#B8D4F5', zIndex: 0 }} />
-              {/* Yellow blob — top-right */}
-              <div className="absolute" style={{ width: 100, height: 100, top: 30, right: 50, borderRadius: '50%', background: '#FFE07A', zIndex: 0 }} />
-              {/* Teal blob — bottom-left */}
-              <div className="absolute" style={{ width: 120, height: 120, bottom: 20, left: 50, borderRadius: '50%', background: '#A8E6E0', zIndex: 0 }} />
-              {/* Grey blob — bottom-right */}
-              <div className="absolute" style={{ width: 150, height: 150, bottom: 10, right: 10, borderRadius: '50%', background: '#DCDCDC', zIndex: 0 }} />
+                {/* ── Blobs (peek out from behind corners) ── */}
+                <div className="absolute" style={{ width: 150, height: 150, top: -16, left: -16, borderRadius: '50%', background: '#B8D4F5', zIndex: 0 }} />
+                <div className="absolute" style={{ width: 96, height: 96, top: -8, right: 60, borderRadius: '50%', background: '#FFE07A', zIndex: 0 }} />
+                <div className="absolute" style={{ width: 110, height: 110, bottom: -16, left: 60, borderRadius: '50%', background: '#A8E6E0', zIndex: 0 }} />
+                <div className="absolute" style={{ width: 140, height: 140, bottom: -16, right: -16, borderRadius: '50%', background: '#DCDCDC', zIndex: 0 }} />
 
-              {/* ── Photos ── */}
-              {/* Top-left: bottom-right corner extra rounded */}
-              <div className="absolute overflow-hidden shadow-lg" style={{ width: 196, height: 196, top: 50, left: 50, borderRadius: '18px 18px 72px 18px', zIndex: 2 }}>
-                <Image src="/hero-1.jpg" alt="Mahasiswa" fill className="object-cover object-top" sizes="196px" priority />
-              </div>
-              {/* Top-right: standard rounded */}
-              <div className="absolute overflow-hidden shadow-lg" style={{ width: 196, height: 196, top: 50, right: 50, borderRadius: '18px', zIndex: 2 }}>
-                <Image src="/hero-2.jpg" alt="Wisudawan" fill className="object-cover object-top" sizes="196px" />
-              </div>
-              {/* Bottom-left: standard rounded */}
-              <div className="absolute overflow-hidden shadow-lg" style={{ width: 196, height: 196, bottom: 50, left: 50, borderRadius: '18px', zIndex: 2 }}>
-                <Image src="/hero-3.jpg" alt="Wisudawan Brawijaya" fill className="object-cover object-top" sizes="196px" />
-              </div>
-              {/* Bottom-right: top-left corner extra rounded */}
-              <div className="absolute overflow-hidden shadow-lg" style={{ width: 196, height: 196, bottom: 50, right: 50, borderRadius: '72px 18px 18px 18px', zIndex: 2 }}>
-                <Image src="/hero-4.jpg" alt="Wisudawan UIN Jakarta" fill className="object-cover object-top" sizes="196px" />
-              </div>
+                {/* ── Photos — 220×220, 20px gap, 10px outer padding ── */}
+                {/* Top-left: bottom-right corner pill */}
+                <div className="absolute overflow-hidden shadow-lg" style={{ width: 220, height: 220, top: 10, left: 10, borderRadius: '20px 20px 80px 20px', zIndex: 2 }}>
+                  <Image src="/hero-1.jpg" alt="Mahasiswa" fill className="object-cover object-top" sizes="220px" priority />
+                </div>
+                {/* Top-right: standard */}
+                <div className="absolute overflow-hidden shadow-lg" style={{ width: 220, height: 220, top: 10, left: 250, borderRadius: '20px', zIndex: 2 }}>
+                  <Image src="/hero-2.jpg" alt="Wisudawan" fill className="object-cover object-top" sizes="220px" />
+                </div>
+                {/* Bottom-left: standard */}
+                <div className="absolute overflow-hidden shadow-lg" style={{ width: 220, height: 220, top: 250, left: 10, borderRadius: '20px', zIndex: 2 }}>
+                  <Image src="/hero-3.jpg" alt="Wisudawan Brawijaya" fill className="object-cover object-top" sizes="220px" />
+                </div>
+                {/* Bottom-right: top-left corner pill */}
+                <div className="absolute overflow-hidden shadow-lg" style={{ width: 220, height: 220, top: 250, left: 250, borderRadius: '80px 20px 20px 20px', zIndex: 2 }}>
+                  <Image src="/hero-4.jpg" alt="Wisudawan UIN Jakarta" fill className="object-cover object-top" sizes="220px" />
+                </div>
 
-              {/* ── Decorative shapes ── */}
-              {/* Triangle outline — top-right */}
-              <svg className="absolute" style={{ right: 12, top: 16, zIndex: 5 }} width="36" height="36" viewBox="0 0 36 36" fill="none">
-                <path d="M18 4L33 30H3L18 4Z" stroke="#4A90D9" strokeWidth="2.2" fill="none" strokeLinejoin="round"/>
-              </svg>
-              {/* Square outline — middle-right */}
-              <svg className="absolute" style={{ right: 24, top: 240, zIndex: 5 }} width="22" height="22" viewBox="0 0 22 22" fill="none">
-                <rect x="2" y="2" width="18" height="18" stroke="#F4A900" strokeWidth="2.2" fill="none" rx="2"/>
-              </svg>
-              {/* Wavy line — bottom-left */}
-              <svg className="absolute" style={{ left: 8, bottom: 30, zIndex: 5 }} width="56" height="26" viewBox="0 0 56 26" fill="none">
-                <path d="M2 18 Q10 6 20 16 Q30 26 40 16 Q50 6 56 12" stroke="#4A90D9" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
-              </svg>
+                {/* ── Decorative shapes ── */}
+                {/* Triangle outline — top-right */}
+                <svg className="absolute" style={{ right: -28, top: 8, zIndex: 5 }} width="36" height="36" viewBox="0 0 36 36" fill="none">
+                  <path d="M18 4L33 30H3L18 4Z" stroke="#4A90D9" strokeWidth="2.2" fill="none" strokeLinejoin="round"/>
+                </svg>
+                {/* Square outline — middle-right */}
+                <svg className="absolute" style={{ right: -22, top: 250, zIndex: 5 }} width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <rect x="2" y="2" width="18" height="18" stroke="#F4A900" strokeWidth="2.2" fill="none" rx="2"/>
+                </svg>
+                {/* Wavy line — bottom-left */}
+                <svg className="absolute" style={{ left: -10, bottom: 14, zIndex: 5 }} width="56" height="26" viewBox="0 0 56 26" fill="none">
+                  <path d="M2 18 Q10 6 20 16 Q30 26 40 16 Q50 6 56 12" stroke="#4A90D9" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+                </svg>
 
+              </div>
             </div>
 
           </div>
