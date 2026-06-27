@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { formatRupiah, formatDate } from '@/lib/utils'
 import Link from 'next/link'
 import FacultyAccordion from '@/components/ui/FacultyAccordion'
+import UniversityTabs from '@/components/ui/UniversityTabs'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   try {
@@ -85,13 +86,7 @@ export default async function UniversityProfilePage({ params }: { params: Promis
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-0 border-t border-gray-100">
-            {['Tentang', 'Fakultas', 'Program Studi', 'Ulasan'].map((tab, i) => (
-              <button key={tab} className={`px-5 py-3 text-sm font-semibold border-b-[3px] transition-colors ${i === 0 ? 'border-[#F4A900] text-[#033F85]' : 'border-transparent text-gray-400 hover:text-[#033F85]'}`}>
-                {tab}
-              </button>
-            ))}
-          </div>
+          <UniversityTabs />
         </div>
       </div>
 
@@ -99,7 +94,7 @@ export default async function UniversityProfilePage({ params }: { params: Promis
       <div className="max-w-6xl mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6">
         <div className="space-y-5">
           {/* About */}
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <div id="tentang" className="bg-white rounded-xl border border-gray-200 p-5">
             <h2 className="font-bold text-gray-900 mb-3">Tentang {uni.name}</h2>
             <p className="text-sm text-gray-500 leading-relaxed">{uni.description || 'Informasi universitas belum tersedia.'}</p>
           </div>
@@ -125,8 +120,9 @@ export default async function UniversityProfilePage({ params }: { params: Promis
           )}
 
           {/* Faculties */}
+          <div id="program-studi" />
           {uni.faculties.length > 0 && (
-            <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <div id="fakultas" className="bg-white rounded-xl border border-gray-200 p-5">
               <h2 className="font-bold text-gray-900 mb-3">Fakultas &amp; Program Studi</h2>
               <FacultyAccordion faculties={uni.faculties} uniSlug={slug} />
             </div>
@@ -134,7 +130,7 @@ export default async function UniversityProfilePage({ params }: { params: Promis
 
           {/* Reviews */}
           {uni.reviews.length > 0 && (
-            <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <div id="ulasan" className="bg-white rounded-xl border border-gray-200 p-5">
               <h2 className="font-bold text-gray-900 mb-3">Ulasan Mahasiswa</h2>
               <div className="space-y-4">
                 {uni.reviews.map((rev: { id: string; authorName: string; program?: string; graduationYear?: number; rating: number; content: string }) => (
