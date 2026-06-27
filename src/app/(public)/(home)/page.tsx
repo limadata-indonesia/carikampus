@@ -3,19 +3,42 @@ import Link from 'next/link'
 import { PROVINCES } from '@/config'
 import { db } from '@/lib/db'
 
-async function getStats() {
-  const [unis, students] = await Promise.allSettled([
+async function getHomeData() {
+  const [unis, students, featured] = await Promise.allSettled([
     db.university.count({ where: { status: 'APPROVED' } }),
     db.student.count(),
+    db.university.findMany({
+      where: { status: 'APPROVED' },
+      take: 8,
+      orderBy: { qsRanking: 'asc' },
+      include: {
+        _count: { select: { reviews: true } },
+        reviews: { select: { rating: true } },
+        faculties: { include: { _count: { select: { programs: true } } } },
+      },
+    }),
   ])
   return {
-    universities: unis.status === 'fulfilled' ? unis.value : 500,
-    students:     students.status === 'fulfilled' ? students.value : 48000,
+    universities: unis.status === 'fulfilled' ? unis.value : 0,
+    students:     students.status === 'fulfilled' ? students.value : 0,
+    featured:     featured.status === 'fulfilled' ? featured.value : [],
   }
 }
 
+const TYPE_LABELS: Record<string, string> = {
+  NEGERI: 'Negeri', PRIVATE: 'Swasta', KEAGAMAAN: 'Keagamaan', KEDINASAN: 'Kedinasan',
+}
+
 export default async function HomePage() {
-  const stats = await getStats()
+  const { universities, students, featured } = await getHomeData()
+
+  // fallback ordering: universities without QS rank go to end
+  const sorted = [...featured].sort((a, b) => {
+    if (a.qsRanking && b.qsRanking) return a.qsRanking - b.qsRanking
+    if (a.qsRanking) return -1
+    if (b.qsRanking) return 1
+    return 0
+  })
 
   return (
     <>
@@ -35,31 +58,32 @@ export default async function HomePage() {
           </p>
 
           {/* Search */}
-          <div className="flex max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-2xl mb-8">
+          <form action="/cari" method="get" className="flex max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-2xl mb-8">
             <input
+              name="q"
               type="text"
               placeholder="Cari universitas, jurusan, atau kota..."
               className="flex-1 px-4 py-3.5 text-sm text-gray-800 outline-none"
             />
-            <select className="border-l border-gray-200 px-3 py-3.5 text-sm text-gray-500 bg-white outline-none">
-              <option>Semua provinsi</option>
+            <select name="province" className="border-l border-gray-200 px-3 py-3.5 text-sm text-gray-500 bg-white outline-none">
+              <option value="">Semua provinsi</option>
               {PROVINCES.map(p => <option key={p}>{p}</option>)}
             </select>
-            <Link
-              href="/cari"
+            <button
+              type="submit"
               className="bg-[#F4A900] text-[#033F85] px-5 py-3.5 text-sm font-bold hover:bg-[#D99200] transition-colors whitespace-nowrap"
             >
               Cari
-            </Link>
-          </div>
+            </button>
+          </form>
 
           {/* Stats */}
           <div className="flex justify-center gap-10 pt-6 border-t border-white/15">
             {[
-              { val: `${stats.universities}+`, lbl: 'Universitas' },
+              { val: universities > 0 ? `${universities}+` : '500+', lbl: 'Universitas' },
               { val: '3.200+', lbl: 'Program Studi' },
               { val: '34', lbl: 'Provinsi' },
-              { val: `${(stats.students / 1000).toFixed(0)}k+`, lbl: 'Mahasiswa Terbantu' },
+              { val: students > 0 ? `${(students / 1000).toFixed(0)}k+` : '48k+', lbl: 'Mahasiswa Terbantu' },
             ].map(({ val, lbl }) => (
               <div key={lbl} className="text-center">
                 <div className="text-2xl font-bold text-[#F4A900]">{val}</div>
@@ -70,8 +94,77 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Universitas Unggulan */}
+      {sorted.length > 0 && (
+        <section className="max-w-6xl mx-auto px-6 py-12">
+          <div className="flex items-start justify-between mb-6">
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">Universitas Unggulan</h2>
+              <div className="w-8 h-0.5 bg-[#F4A900] mt-1 rounded" />
+            </div>
+            <Link href="/cari" className="text-sm font-semibold text-[#033F85] hover:underline">Lihat semua →</Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {sorted.map(uni => {
+              const avgRating = uni.reviews.length
+                ? (uni.reviews.reduce((s, r) => s + r.rating, 0) / uni.reviews.length).toFixed(1)
+                : null
+              const totalPrograms = uni.faculties.reduce((s, f) => s + f._count.programs, 0)
+              const initial = uni.name.split(' ').filter(w => w.length > 2).map(w => w[0]).join('').slice(0, 3).toUpperCase()
+
+              return (
+                <Link
+                  key={uni.id}
+                  href={`/universitas/${uni.slug}`}
+                  className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-[#B8CCE8] transition-all group"
+                >
+                  {/* Card header */}
+                  <div className="h-24 bg-gradient-to-br from-[#033F85] to-[#022D5E] flex items-center justify-center relative">
+                    <div className="w-14 h-14 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white font-bold text-sm">
+                      {initial}
+                    </div>
+                    {uni.qsRanking && (
+                      <div className="absolute top-2 right-2 bg-[#F4A900] text-[#033F85] text-xs font-bold px-2 py-0.5 rounded-full">
+                        QS #{uni.qsRanking}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-4">
+                    <div className="font-bold text-gray-900 text-sm mb-0.5 group-hover:text-[#033F85] transition-colors line-clamp-2 leading-snug">
+                      {uni.name}
+                    </div>
+                    <div className="text-xs text-gray-400 mb-3">{uni.city}, {uni.province}</div>
+
+                    <div className="flex gap-1.5 flex-wrap mb-3">
+                      <span className="text-xs font-semibold bg-[#E8F0FB] text-[#033F85] px-2 py-0.5 rounded-full">
+                        {TYPE_LABELS[uni.type] ?? uni.type}
+                      </span>
+                      {uni.accreditation && (
+                        <span className="text-xs font-semibold bg-[#E6F4EC] text-green-700 px-2 py-0.5 rounded-full">
+                          Ak. {uni.accreditation}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between text-xs text-gray-400 border-t border-gray-100 pt-2.5 mt-2.5">
+                      <span>{totalPrograms} prodi</span>
+                      {avgRating
+                        ? <span>⭐ {avgRating}</span>
+                        : <span className="text-[#033F85] font-semibold">Lihat profil →</span>
+                      }
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        </section>
+      )}
+
       {/* How it works */}
-      <section className="max-w-6xl mx-auto px-6 py-16">
+      <section className="max-w-6xl mx-auto px-6 py-12 border-t border-gray-100">
         <div className="flex items-start justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-gray-900">Cara Kerjanya</h2>
