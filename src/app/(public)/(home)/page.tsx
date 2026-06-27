@@ -9,6 +9,7 @@ async function getHomeData() {
     db.student.count(),
     db.university.findMany({
       where: { status: 'APPROVED' },
+      take: 10,
       orderBy: [{ qsRanking: 'asc' }, { name: 'asc' }],
       include: {
         _count: { select: { reviews: true } },
@@ -82,7 +83,7 @@ export default async function HomePage() {
           <div className="flex items-start justify-between mb-6">
             <div>
               <h2 className="text-xl font-bold text-gray-900">Universitas Unggulan</h2>
-              <p className="text-sm text-gray-400 mt-1">{sorted.length} universitas terdaftar</p>
+              <p className="text-sm text-gray-400 mt-1">10 universitas pilihan</p>
               <div className="w-8 h-0.5 bg-[#F4A900] mt-1 rounded" />
             </div>
             <Link href="/cari" className="text-sm font-semibold text-[#033F85] hover:underline">Lihat semua →</Link>
