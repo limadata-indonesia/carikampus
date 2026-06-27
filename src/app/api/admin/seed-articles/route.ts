@@ -447,6 +447,24 @@ Nama jurusan semakin tidak relevan dibandingkan skill spesifik yang kamu miliki.
 
 export async function GET() {
   try {
+    // Create the articles table if it doesn't exist
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS articles (
+        id TEXT PRIMARY KEY DEFAULT concat('c', replace(gen_random_uuid()::text, '-', '')),
+        title TEXT NOT NULL,
+        slug TEXT NOT NULL UNIQUE,
+        excerpt TEXT,
+        content TEXT NOT NULL,
+        category TEXT NOT NULL,
+        emoji TEXT,
+        published BOOLEAN NOT NULL DEFAULT false,
+        "publishedAt" TIMESTAMP(3),
+        "readTime" TEXT,
+        "createdAt" TIMESTAMP(3) NOT NULL DEFAULT now(),
+        "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT now()
+      )
+    `)
+
     const results = []
     for (const art of ARTICLES) {
       const created = await db.article.upsert({
