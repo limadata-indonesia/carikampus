@@ -9,22 +9,22 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 bg-[#033F85] border-b-[3px] border-[#F4A900]">
-      <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
 
         {/* Brand */}
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-[#F4A900] rounded-md flex items-center justify-center font-black text-[#033F85] text-sm" aria-hidden="true">
+          <div className="w-9 h-9 bg-[#F4A900] rounded-xl flex items-center justify-center font-black text-[#033F85] text-sm" aria-hidden="true">
             CK
           </div>
           <div>
-            <div className="text-sm font-bold text-white leading-tight">Cari Kampus</div>
-            <div className="text-sm font-bold text-[#F4A900] leading-tight">Cari Kerja</div>
+            <div className="text-sm font-extrabold text-[#033F85] leading-tight tracking-tight">Cari Kampus</div>
+            <div className="text-xs font-bold text-[#F4A900] leading-tight tracking-tight">Cari Kerja</div>
           </div>
         </Link>
 
         {/* Links */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden md:flex items-center gap-1 bg-gray-100 rounded-full p-1">
           {NAV_LINKS.map(({ href, label }) => (
             <NavLink key={href} href={href} label={label} />
           ))}
@@ -34,15 +34,15 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           <Link
             href="/masuk"
-            className="px-3 py-1.5 text-sm font-semibold text-white border border-white/50 rounded-md hover:bg-white/10 transition-colors"
+            className="px-4 py-2 text-sm font-bold text-[#1A1520] border-2 border-gray-200 rounded-full hover:border-[#033F85] hover:text-[#033F85] transition-colors"
           >
             Masuk
           </Link>
           <Link
             href="/tes-minat"
-            className="px-3 py-1.5 text-sm font-bold bg-[#F4A900] text-[#033F85] rounded-md hover:bg-[#D99200] transition-colors"
+            className="px-4 py-2 text-sm font-black bg-[#1A1520] text-white rounded-full hover:bg-[#033F85] transition-colors"
           >
-            Mulai Tes Minat
+            Mulai Tes Minat →
           </Link>
         </div>
 

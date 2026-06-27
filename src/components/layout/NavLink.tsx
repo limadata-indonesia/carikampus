@@ -8,8 +8,10 @@ export default function NavLink({ href, label }: { href: string; label: string }
   return (
     <Link
       href={href}
-      className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-        active ? 'bg-white/20 text-white' : 'text-white/80 hover:bg-white/15 hover:text-white'
+      className={`px-4 py-1.5 rounded-full text-sm font-bold transition-all ${
+        active
+          ? 'bg-[#033F85] text-white shadow-sm'
+          : 'text-gray-500 hover:text-[#1A1520] hover:bg-white'
       }`}
     >
       {label}
