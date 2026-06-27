@@ -67,7 +67,7 @@ export default async function HomePage() {
         <div className="absolute top-8 right-0 w-72 h-72 rounded-full bg-[#F4A900]/20 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-20 w-48 h-48 rounded-full bg-[#2EC4B6]/15 blur-3xl pointer-events-none" />
 
-        <div className="max-w-5xl mx-auto px-6">
+        <div className="max-w-6xl mx-auto px-6">
           {/* badge */}
           <div className="inline-flex items-center gap-2 bg-[#F4A900]/20 text-[#1A1520] text-xs font-bold px-4 py-1.5 rounded-full mb-6">
             <span className="w-2 h-2 rounded-full bg-[#F4A900] inline-block" />
