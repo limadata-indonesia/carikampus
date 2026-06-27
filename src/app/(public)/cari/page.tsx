@@ -5,33 +5,38 @@ import { PROVINCES } from '@/config'
 
 interface SearchParams { province?: string; type?: string; q?: string; page?: string }
 
-export default async function CariPage({ searchParams }: { searchParams: SearchParams }) {
-  const page = Number(searchParams.page || 1)
+export default async function CariPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
+  const sp = await searchParams
+  const page = Number(sp.page || 1)
   const limit = 12
   const skip = (page - 1) * limit
 
   const where = {
     status: 'APPROVED' as const,
-    ...(searchParams.province && { province: searchParams.province }),
-    ...(searchParams.type && { type: searchParams.type as any }),
-    ...(searchParams.q && {
+    ...(sp.province && { province: sp.province }),
+    ...(sp.type && { type: sp.type as any }),
+    ...(sp.q && {
       OR: [
-        { name: { contains: searchParams.q, mode: 'insensitive' as const } },
-        { city: { contains: searchParams.q, mode: 'insensitive' as const } },
+        { name: { contains: sp.q, mode: 'insensitive' as const } },
+        { city: { contains: sp.q, mode: 'insensitive' as const } },
       ]
     }),
   }
 
-  const [universities, total] = await Promise.all([
-    db.university.findMany({
-      where,
-      take: limit,
-      skip,
-      include: { _count: { select: { reviews: true, applications: true } }, reviews: { select: { rating: true } } },
-      orderBy: { name: 'asc' },
-    }),
-    db.university.count({ where }),
-  ]).catch(() => [[], 0])
+  let universities: Awaited<ReturnType<typeof db.university.findMany<{ include: { _count: { select: { reviews: true; applications: true } }; reviews: { select: { rating: true } } } }>>> = []
+  let total = 0
+  try {
+    ;[universities, total] = await Promise.all([
+      db.university.findMany({
+        where,
+        take: limit,
+        skip,
+        include: { _count: { select: { reviews: true, applications: true } }, reviews: { select: { rating: true } } },
+        orderBy: { name: 'asc' },
+      }),
+      db.university.count({ where }),
+    ])
+  } catch { /* db unavailable — show empty state */ }
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
@@ -40,12 +45,12 @@ export default async function CariPage({ searchParams }: { searchParams: SearchP
 
       {/* Filters */}
       <form className="flex gap-3 mb-8 flex-wrap">
-        <input name="q" defaultValue={searchParams.q} placeholder="Nama universitas atau kota..." className="border border-gray-300 rounded-lg px-3 py-2 text-sm flex-1 min-w-48 outline-none focus:border-[#033F85]"/>
-        <select name="province" defaultValue={searchParams.province} className="border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-[#033F85]">
+        <input name="q" defaultValue={sp.q} placeholder="Nama universitas atau kota..." className="border border-gray-300 rounded-lg px-3 py-2 text-sm flex-1 min-w-48 outline-none focus:border-[#033F85]"/>
+        <select name="province" defaultValue={sp.province} className="border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-[#033F85]">
           <option value="">Semua Provinsi</option>
           {PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
         </select>
-        <select name="type" defaultValue={searchParams.type} className="border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-[#033F85]">
+        <select name="type" defaultValue={sp.type} className="border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-[#033F85]">
           <option value="">Semua Tipe</option>
           <option value="NEGERI">Negeri</option>
           <option value="PRIVATE">Swasta</option>
