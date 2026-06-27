@@ -8,6 +8,7 @@ import DashboardShell from '@/components/layout/DashboardShell'
 const SIDEBAR_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: '📊' },
   { href: '/admin/universitas', label: 'Universitas', icon: '🏛' },
+  { href: '/admin/artikel', label: 'Artikel', icon: '📝' },
   { href: '/admin/pengguna', label: 'Pengguna', icon: '👥' },
   { href: '/admin/transaksi', label: 'Transaksi', icon: '💳' },
 ]
