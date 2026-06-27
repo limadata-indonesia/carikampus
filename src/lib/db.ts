@@ -1,18 +1,15 @@
-// Prisma client - initialized at runtime after `prisma generate` is run
-// Run: npx prisma generate && npx prisma db push
+import { PrismaClient } from '@prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
 
-let db: any
+const connectionString = process.env.DATABASE_URL!
 
-try {
-  const { PrismaClient } = require('@prisma/client')
-  const globalForPrisma = globalThis as any
-  db = globalForPrisma.prisma ?? new PrismaClient({
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
+
+export const db =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    adapter: new PrismaPg({ connectionString }),
     log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
   })
-  if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
-} catch {
-  // Prisma client not generated yet - run: npx prisma generate
-  db = null
-}
 
-export { db }
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db

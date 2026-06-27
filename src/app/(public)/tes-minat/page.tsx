@@ -1,12 +1,23 @@
-import Link from 'next/link'
+import Script from 'next/script'
 import { PRICING, TEST_CONFIG } from '@/config'
 import { formatRupiah } from '@/lib/utils'
+import BuyButton from '@/components/ui/BuyButton'
 
 export const metadata = { title: 'Tes Minat Bakat', description: '144 soal psikometri RIASEC + kognitif. Temukan jurusan dan universitas terbaik untukmu.' }
+
+const MIDTRANS_URL = process.env.MIDTRANS_ENV === 'production'
+  ? 'https://app.midtrans.com/snap/snap.js'
+  : 'https://app.sandbox.midtrans.com/snap/snap.js'
 
 export default function TesMinatPage() {
   return (
     <>
+      <Script
+        src={MIDTRANS_URL}
+        data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY ?? ''}
+        strategy="lazyOnload"
+      />
+
       {/* Hero */}
       <section className="bg-[#033F85] py-10 text-center relative">
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#F4A900]" />
@@ -56,12 +67,7 @@ export default function TesMinatPage() {
               <div className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">{pkg.label}</div>
               <div className="text-3xl font-bold text-[#033F85] mb-1">{formatRupiah(pkg.amount)}<span className="text-xs font-normal text-gray-400">/akses</span></div>
               <div className="text-xs text-gray-400 mb-4">{pkg.desc}</div>
-              <Link
-                href="/masuk"
-                className={`block w-full text-center text-sm font-bold py-2.5 rounded-lg transition-colors ${key === 'FULL' ? 'bg-[#F4A900] text-[#033F85] hover:bg-[#D99200]' : 'border-2 border-[#033F85] text-[#033F85] hover:bg-[#E8F0FB]'}`}
-              >
-                Mulai Sekarang
-              </Link>
+              <BuyButton pkg={key} variant={key === 'FULL' ? 'primary' : 'outline'} />
             </div>
           ))}
         </div>
