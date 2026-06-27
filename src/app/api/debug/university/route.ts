@@ -4,7 +4,10 @@ import { db } from '@/lib/db'
 export async function GET(req: NextRequest) {
   const slug = req.nextUrl.searchParams.get('slug') || 'binus-university'
 
-  const results: Record<string, unknown> = {}
+  const dbUrl = process.env.DATABASE_URL || ''
+  const urlHost = dbUrl.replace(/:[^:@]+@/, ':***@').split('@')[1]?.split('/')[0] || 'NOT SET'
+
+  const results: Record<string, unknown> = { _dbHost: urlHost }
 
   // 1. Basic list
   try {
