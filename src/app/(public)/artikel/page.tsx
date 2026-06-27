@@ -1,10 +1,10 @@
 export const dynamic = 'force-dynamic'
 import Link from 'next/link'
+import { Suspense } from 'react'
 import { db } from '@/lib/db'
+import CategoryFilter from './CategoryFilter'
 
 export const metadata = { title: 'Artikel', description: 'Tips memilih kampus, jurusan, dan karier terbaik untukmu' }
-
-const CATEGORIES = ['Semua', 'Tips Karier', 'Universitas', 'Tes Minat', 'SNBT', 'Biaya Kuliah', 'Karier']
 
 const CATEGORY_COLORS: Record<string, string> = {
   'Tips Karier':  'bg-[#E8F0FB] text-[#033F85]',
@@ -19,20 +19,25 @@ function formatDate(d: Date) {
   return new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
 }
 
-export default async function ArtikelPage() {
+export default async function ArtikelPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
+  const { category } = await searchParams
+
   let articles: { id: string; title: string; slug: string; excerpt: string | null; category: string; publishedAt: Date | null; readTime: string | null; emoji: string | null }[] = []
   try {
     articles = await db.article.findMany({
-      where: { published: true },
+      where: {
+        published: true,
+        ...(category && category !== 'Semua' ? { category } : {}),
+      },
       orderBy: { publishedAt: 'desc' },
       select: { id: true, title: true, slug: true, excerpt: true, category: true, publishedAt: true, readTime: true, emoji: true },
     })
   } catch {
-    // table not yet created — fall back to empty
+    // table not yet created
   }
 
-  const featured = articles[0]
-  const rest = articles.slice(1)
+  const featured = !category || category === 'Semua' ? articles[0] : null
+  const rest = featured ? articles.slice(1) : articles
 
   return (
     <>
@@ -45,23 +50,20 @@ export default async function ArtikelPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-6 py-10">
-        {/* Categories */}
-        <div className="flex gap-2 flex-wrap mb-8">
-          {CATEGORIES.map((cat, i) => (
-            <button key={cat} className={`px-4 py-1.5 rounded-full text-sm font-semibold border transition-colors ${i === 0 ? 'bg-[#033F85] text-white border-[#033F85]' : 'border-gray-300 text-gray-600 hover:border-[#033F85] hover:text-[#033F85]'}`}>
-              {cat}
-            </button>
-          ))}
-        </div>
+        {/* Category filter — client component */}
+        <Suspense fallback={null}>
+          <CategoryFilter />
+        </Suspense>
 
         {articles.length === 0 && (
           <div className="text-center py-20">
-            <div className="text-5xl mb-4">📝</div>
-            <p className="text-gray-500">Belum ada artikel yang dipublikasikan.</p>
+            <div className="text-5xl mb-4">📭</div>
+            <p className="text-gray-500">Tidak ada artikel dalam kategori ini.</p>
+            <Link href="/artikel" className="text-sm text-[#033F85] font-semibold hover:underline mt-3 inline-block">Lihat semua artikel</Link>
           </div>
         )}
 
-        {/* Featured article */}
+        {/* Featured article — only on "Semua" view */}
         {featured && (
           <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden mb-6 hover:shadow-md transition-shadow">
             <div className="bg-[#E8F0FB] border-b-[3px] border-[#F4A900] h-40 flex items-center justify-center text-6xl">
@@ -75,7 +77,7 @@ export default async function ArtikelPage() {
               <p className="text-sm text-gray-500 leading-relaxed mb-4">{featured.excerpt}</p>
               <div className="flex items-center justify-between">
                 <span className="text-xs text-gray-400">
-                  {featured.publishedAt ? formatDate(featured.publishedAt) : ''} · {featured.readTime} baca
+                  {featured.publishedAt ? formatDate(featured.publishedAt) : ''}{featured.readTime ? ` · ${featured.readTime} baca` : ''}
                 </span>
                 <Link href={`/artikel/${featured.slug}`} className="text-sm font-bold text-[#033F85] hover:underline">Baca selengkapnya →</Link>
               </div>
@@ -99,7 +101,7 @@ export default async function ArtikelPage() {
                   <p className="text-xs text-gray-400 leading-relaxed mb-3 line-clamp-2">{article.excerpt}</p>
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-gray-300">
-                      {article.publishedAt ? formatDate(article.publishedAt) : ''} · {article.readTime}
+                      {article.publishedAt ? formatDate(article.publishedAt) : ''}{article.readTime ? ` · ${article.readTime}` : ''}
                     </span>
                     <Link href={`/artikel/${article.slug}`} className="text-xs font-bold text-[#033F85] hover:underline">Baca →</Link>
                   </div>
