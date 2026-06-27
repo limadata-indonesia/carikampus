@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import NavLink from './NavLink'
 
 const NAV_LINKS = [
@@ -13,13 +14,15 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
 
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-9 h-9 bg-[#F4A900] rounded-xl flex items-center justify-center font-black text-[#033F85] text-sm" aria-hidden="true">
-            CK
-          </div>
-          <div>
-            <div className="text-sm font-extrabold text-[#033F85] leading-tight tracking-tight">Cari Kampus</div>
-            <div className="text-xs font-bold text-[#F4A900] leading-tight tracking-tight">Cari Kerja</div>
+        <Link href="/" className="flex items-center">
+          <div className="bg-[#033F85] rounded-xl px-3 py-2">
+            <Image
+              src="/logo_dark.png"
+              alt="CariKampus CariKerja"
+              width={120}
+              height={31}
+              priority
+            />
           </div>
         </Link>
 

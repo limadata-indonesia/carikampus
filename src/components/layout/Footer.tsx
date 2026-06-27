@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Footer() {
   return (
@@ -7,12 +8,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
           {/* Brand */}
           <div className="md:col-span-1">
-            <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 bg-[#F4A900] rounded-xl flex items-center justify-center font-black text-[#1A1520] text-sm">CK</div>
-              <div>
-                <div className="text-sm font-extrabold leading-tight tracking-tight">Cari Kampus</div>
-                <div className="text-xs font-bold text-[#F4A900] leading-tight">Cari Kerja</div>
-              </div>
+            <div className="mb-4">
+              <Image
+                src="/logo_dark.png"
+                alt="CariKampus CariKerja"
+                width={140}
+                height={36}
+              />
             </div>
             <p className="text-sm text-white/50 leading-relaxed">
               Platform universitas dan karier terlengkap di Indonesia.
