@@ -3,6 +3,7 @@ import { db } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import { formatRupiah, formatDate } from '@/lib/utils'
 import Link from 'next/link'
+import FacultyAccordion from '@/components/ui/FacultyAccordion'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   try {
@@ -127,17 +128,7 @@ export default async function UniversityProfilePage({ params }: { params: Promis
           {uni.faculties.length > 0 && (
             <div className="bg-white rounded-xl border border-gray-200 p-5">
               <h2 className="font-bold text-gray-900 mb-3">Fakultas &amp; Program Studi</h2>
-              <div className="space-y-2">
-                {uni.faculties.map((fac: { id: string; name: string; programs: unknown[] }) => (
-                  <div key={fac.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:border-[#F4A900] hover:bg-[#E8F0FB] transition-all cursor-pointer border-l-[3px] border-l-transparent hover:border-l-[#F4A900]">
-                    <div>
-                      <div className="text-sm font-bold text-gray-900">{fac.name}</div>
-                      <div className="text-xs text-gray-400">{fac.programs.length} program studi</div>
-                    </div>
-                    <span className="text-gray-300">›</span>
-                  </div>
-                ))}
-              </div>
+              <FacultyAccordion faculties={uni.faculties} />
             </div>
           )}
 
