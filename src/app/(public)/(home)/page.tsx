@@ -114,110 +114,50 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* ── RIGHT: arch photo collage (Flowy style) ── */}
+            {/* ── RIGHT: 2×2 photo grid collage ── */}
             <div className="relative h-[500px] hidden lg:block select-none">
 
-              {/* Decorative circle ring behind everything */}
-              <div className="absolute"
-                style={{ width: 320, height: 320, top: 60, left: '50%', transform: 'translateX(-50%)', borderRadius: '50%', border: '2.5px dashed #F4A900', opacity: 0.5, zIndex: 0 }} />
+              {/* ── Blob decorations (behind photos) ── */}
+              {/* Blue blob — top-left */}
+              <div className="absolute" style={{ width: 160, height: 160, top: 20, left: 20, borderRadius: '50%', background: '#B8D4F5', zIndex: 0 }} />
+              {/* Yellow blob — top-right */}
+              <div className="absolute" style={{ width: 100, height: 100, top: 30, right: 50, borderRadius: '50%', background: '#FFE07A', zIndex: 0 }} />
+              {/* Teal blob — bottom-left */}
+              <div className="absolute" style={{ width: 120, height: 120, bottom: 20, left: 50, borderRadius: '50%', background: '#A8E6E0', zIndex: 0 }} />
+              {/* Grey blob — bottom-right */}
+              <div className="absolute" style={{ width: 150, height: 150, bottom: 10, right: 10, borderRadius: '50%', background: '#DCDCDC', zIndex: 0 }} />
 
-              {/* Decorative filled circle */}
-              <div className="absolute"
-                style={{ width: 200, height: 200, top: 120, right: 60, borderRadius: '50%', background: '#FEF3D0', zIndex: 0 }} />
-
-              {/* Photo 4 — UIN Jakarta (new) — ARCH, far-left, behind man */}
-              <div className="absolute overflow-hidden shadow-lg"
-                style={{
-                  width: 155, height: 290,
-                  left: 0, top: 60,
-                  borderRadius: '9999px 9999px 22px 22px',
-                  background: '#FFE8D6',
-                  padding: 7,
-                  transform: 'rotate(-7deg)',
-                  zIndex: 1,
-                }}>
-                <div style={{ width: '100%', height: '100%', borderRadius: '9999px 9999px 15px 15px', overflow: 'hidden', position: 'relative' }}>
-                  <Image src="/hero-4.jpg" alt="Wisudawan UIN Jakarta" fill className="object-cover object-top" sizes="141px" />
-                </div>
+              {/* ── Photos ── */}
+              {/* Top-left: bottom-right corner extra rounded */}
+              <div className="absolute overflow-hidden shadow-lg" style={{ width: 196, height: 196, top: 50, left: 50, borderRadius: '18px 18px 72px 18px', zIndex: 2 }}>
+                <Image src="/hero-1.jpg" alt="Mahasiswa" fill className="object-cover object-top" sizes="196px" priority />
+              </div>
+              {/* Top-right: standard rounded */}
+              <div className="absolute overflow-hidden shadow-lg" style={{ width: 196, height: 196, top: 50, right: 50, borderRadius: '18px', zIndex: 2 }}>
+                <Image src="/hero-2.jpg" alt="Wisudawan" fill className="object-cover object-top" sizes="196px" />
+              </div>
+              {/* Bottom-left: standard rounded */}
+              <div className="absolute overflow-hidden shadow-lg" style={{ width: 196, height: 196, bottom: 50, left: 50, borderRadius: '18px', zIndex: 2 }}>
+                <Image src="/hero-3.jpg" alt="Wisudawan Brawijaya" fill className="object-cover object-top" sizes="196px" />
+              </div>
+              {/* Bottom-right: top-left corner extra rounded */}
+              <div className="absolute overflow-hidden shadow-lg" style={{ width: 196, height: 196, bottom: 50, right: 50, borderRadius: '72px 18px 18px 18px', zIndex: 2 }}>
+                <Image src="/hero-4.jpg" alt="Wisudawan UIN Jakarta" fill className="object-cover object-top" sizes="196px" />
               </div>
 
-              {/* Photo 1 — man in suit — ARCH, center-left, largest */}
-              <div className="absolute overflow-hidden shadow-2xl"
-                style={{
-                  width: 196, height: 360,
-                  left: 100, top: 20,
-                  borderRadius: '9999px 9999px 28px 28px',
-                  background: '#FEF3D0',
-                  padding: 8,
-                  transform: 'rotate(-2deg)',
-                  zIndex: 2,
-                }}>
-                <div style={{ width: '100%', height: '100%', borderRadius: '9999px 9999px 20px 20px', overflow: 'hidden', position: 'relative' }}>
-                  <Image src="/hero-1.jpg" alt="Profesional muda" fill className="object-cover object-top" sizes="180px" priority />
-                </div>
-              </div>
-
-              {/* Photo 2 — graduation red — ARCH, right-top */}
-              <div className="absolute overflow-hidden shadow-xl"
-                style={{
-                  width: 172, height: 300,
-                  right: 20, top: 0,
-                  borderRadius: '9999px 9999px 24px 24px',
-                  background: '#E0F7F5',
-                  padding: 8,
-                  transform: 'rotate(3.5deg)',
-                  zIndex: 3,
-                }}>
-                <div style={{ width: '100%', height: '100%', borderRadius: '9999px 9999px 16px 16px', overflow: 'hidden', position: 'relative' }}>
-                  <Image src="/hero-2.jpg" alt="Wisudawan" fill className="object-cover object-top" sizes="156px" />
-                </div>
-              </div>
-
-              {/* Photo 3 — graduation black — ARCH, right-bottom */}
-              <div className="absolute overflow-hidden shadow-xl"
-                style={{
-                  width: 160, height: 240,
-                  right: 50, bottom: 10,
-                  borderRadius: '9999px 9999px 20px 20px',
-                  background: '#E8F0FB',
-                  padding: 8,
-                  transform: 'rotate(-2deg)',
-                  zIndex: 4,
-                }}>
-                <div style={{ width: '100%', height: '100%', borderRadius: '9999px 9999px 12px 12px', overflow: 'hidden', position: 'relative' }}>
-                  <Image src="/hero-3.jpg" alt="Wisudawan Brawijaya" fill className="object-cover object-top" sizes="144px" />
-                </div>
-              </div>
-
-              {/* Arrow left — decorative */}
-              <svg className="absolute" style={{ left: 10, bottom: 80, zIndex: 5 }} width="52" height="24" viewBox="0 0 52 24" fill="none">
-                <path d="M51 12H3M3 12L14 2M3 12L14 22" stroke="#F4A900" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              {/* ── Decorative shapes ── */}
+              {/* Triangle outline — top-right */}
+              <svg className="absolute" style={{ right: 12, top: 16, zIndex: 5 }} width="36" height="36" viewBox="0 0 36 36" fill="none">
+                <path d="M18 4L33 30H3L18 4Z" stroke="#4A90D9" strokeWidth="2.2" fill="none" strokeLinejoin="round"/>
               </svg>
-
-              {/* Arrow right — decorative */}
-              <svg className="absolute" style={{ right: 8, top: 310, zIndex: 5 }} width="44" height="20" viewBox="0 0 44 20" fill="none">
-                <path d="M1 10H41M41 10L31 2M41 10L31 18" stroke="#2EC4B6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              {/* Square outline — middle-right */}
+              <svg className="absolute" style={{ right: 24, top: 240, zIndex: 5 }} width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <rect x="2" y="2" width="18" height="18" stroke="#F4A900" strokeWidth="2.2" fill="none" rx="2"/>
               </svg>
-
-              {/* Badge — check */}
-              <div className="absolute flex items-center justify-center shadow-lg"
-                style={{ width: 44, height: 44, top: 12, right: 0, borderRadius: '50%', background: '#033F85', zIndex: 6 }}>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M4 10L8.5 14.5L16 6" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-
-              {/* Floating stat card */}
-              <div className="absolute bg-white rounded-2xl shadow-xl px-4 py-3 border border-gray-100"
-                style={{ left: 270, bottom: 80, zIndex: 6 }}>
-                <div className="text-[10px] text-[#6B6575] font-semibold uppercase tracking-wide">Bergabung</div>
-                <div className="text-sm font-black text-[#1A1520] mt-0.5">48k+ Mahasiswa</div>
-                <div className="flex -space-x-1.5 mt-1.5">
-                  {['#033F85','#F4A900','#2EC4B6','#1A1520'].map(c => (
-                    <div key={c} className="w-5 h-5 rounded-full border-2 border-white" style={{ background: c }} />
-                  ))}
-                </div>
-              </div>
+              {/* Wavy line — bottom-left */}
+              <svg className="absolute" style={{ left: 8, bottom: 30, zIndex: 5 }} width="56" height="26" viewBox="0 0 56 26" fill="none">
+                <path d="M2 18 Q10 6 20 16 Q30 26 40 16 Q50 6 56 12" stroke="#4A90D9" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+              </svg>
 
             </div>
 
