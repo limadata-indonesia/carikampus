@@ -95,20 +95,18 @@ export default async function HomePage() {
               <SearchForm />
 
               {/* Stats row */}
-              <div className="flex flex-wrap gap-6 mt-10">
+              <div className="flex flex-wrap gap-7 mt-10">
                 {[
-                  { val: count > 0 ? `${count}+` : '500+', lbl: 'Universitas',    color: 'bg-[#033F85] text-white',      size: 'text-sm' },
-                  { val: '3.200+',                          lbl: 'Program Studi',  color: 'bg-[#F4A900] text-[#1A1520]', size: 'text-[11px]' },
-                  { val: '34',                              lbl: 'Provinsi',        color: 'bg-[#2EC4B6] text-white',      size: 'text-sm' },
-                  { val: '48k+',                            lbl: 'Mahasiswa',       color: 'bg-[#1A1520] text-white',      size: 'text-sm' },
-                  { val: '200+',                            lbl: 'Mitra Industri',  color: 'bg-[#FF6B35] text-white',      size: 'text-sm' },
-                  { val: '4.9★',                            lbl: 'Rating',          color: 'bg-[#7C3AED] text-white',      size: 'text-[11px]' },
-                ].map(({ val, lbl, color, size }) => (
-                  <div key={lbl} className="flex items-center gap-3">
-                    <div className={`w-14 h-14 rounded-2xl ${color} ${size} flex items-center justify-center font-black leading-none text-center shrink-0`}>
-                      {val}
-                    </div>
-                    <span className="text-sm font-semibold text-[#6B6575]">{lbl}</span>
+                  { val: count > 0 ? `${count}+` : '500+', lbl: 'Universitas',   color: 'text-[#033F85]' },
+                  { val: '3.200+',                          lbl: 'Program Studi', color: 'text-[#F4A900]' },
+                  { val: '34',                              lbl: 'Provinsi',       color: 'text-[#2EC4B6]' },
+                  { val: '48k+',                            lbl: 'Mahasiswa',      color: 'text-[#FF6B35]' },
+                  { val: '200+',                            lbl: 'Mitra Industri', color: 'text-[#7C3AED]' },
+                  { val: '4.9★',                            lbl: 'Rating',         color: 'text-[#1A1520]' },
+                ].map(({ val, lbl, color }) => (
+                  <div key={lbl} className="text-center">
+                    <div className={`text-2xl font-black ${color} leading-none`}>{val}</div>
+                    <div className="text-xs text-[#6B6575] uppercase tracking-widest mt-1.5 font-semibold">{lbl}</div>
                   </div>
                 ))}
               </div>
