@@ -15,21 +15,42 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function UniversityProfilePage({ params }: { params: Promise<{ slug: string }> }) {
-  const uni = await db.university.findFirst({
-    where: { slug: (await params).slug, status: 'APPROVED' },
-    include: {
-      faculties: { include: { programs: true } },
-      facilities: true,
-      dormitories: true,
-      reviews: { orderBy: { createdAt: 'desc' }, take: 5 },
-      _count: { select: { reviews: true, applications: true, savedBy: true } },
-    },
-  }).catch(() => null)
+  const slug = (await params).slug
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let uni: any = null
+  let dbError: string | null = null
+
+  try {
+    uni = await db.university.findFirst({
+      where: { slug, status: 'APPROVED' },
+      include: {
+        faculties: { include: { programs: true } },
+        reviews: { orderBy: { createdAt: 'desc' }, take: 5 },
+        _count: { select: { reviews: true } },
+      },
+    })
+  } catch (e) {
+    dbError = String(e)
+  }
+
+  if (dbError) {
+    return (
+      <div className="min-h-screen bg-[#F4F5F6] flex items-center justify-center px-6">
+        <div className="text-center max-w-lg">
+          <div className="text-6xl mb-4">⚠️</div>
+          <h1 className="text-xl font-bold text-gray-900 mb-2">Gagal memuat profil universitas</h1>
+          <p className="text-xs text-red-500 font-mono bg-red-50 border border-red-200 rounded p-3 mb-6 text-left break-all">{dbError}</p>
+          <Link href="/" className="bg-[#033F85] text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-[#022D5E]">← Beranda</Link>
+        </div>
+      </div>
+    )
+  }
 
   if (!uni) notFound()
 
   const avgRating = uni.reviews.length
-    ? (uni.reviews.reduce((s, r) => s + r.rating, 0) / uni.reviews.length).toFixed(1)
+    ? (uni.reviews.reduce((s: number, r: { rating: number }) => s + r.rating, 0) / uni.reviews.length).toFixed(1)
     : null
 
   return (
@@ -64,7 +85,7 @@ export default async function UniversityProfilePage({ params }: { params: Promis
 
           {/* Tabs */}
           <div className="flex gap-0 border-t border-gray-100">
-            {['Tentang', 'Fakultas', 'Program Studi', 'Fasilitas', 'Ulasan'].map((tab, i) => (
+            {['Tentang', 'Fakultas', 'Program Studi', 'Ulasan'].map((tab, i) => (
               <button key={tab} className={`px-5 py-3 text-sm font-semibold border-b-[3px] transition-colors ${i === 0 ? 'border-[#F4A900] text-[#033F85]' : 'border-transparent text-gray-400 hover:text-[#033F85]'}`}>
                 {tab}
               </button>
@@ -90,7 +111,7 @@ export default async function UniversityProfilePage({ params }: { params: Promis
                 {[
                   { val: uni.totalStudents ? `${(uni.totalStudents/1000).toFixed(0)}k+` : '—', lbl: 'Mahasiswa' },
                   { val: uni.totalFaculties || '—', lbl: 'Fakultas' },
-                  { val: uni.faculties.reduce((s,f) => s + f.programs.length, 0) || '—', lbl: 'Program Studi' },
+                  { val: uni.faculties.reduce((s: number, f: { programs: unknown[] }) => s + f.programs.length, 0) || '—', lbl: 'Program Studi' },
                   { val: uni.qsRanking ? `#${uni.qsRanking}` : '—', lbl: 'QS Ranking' },
                 ].map(({ val, lbl }) => (
                   <div key={lbl} className="bg-gray-50 rounded-lg p-3 text-center border-b-2 border-[#F4A900]">
@@ -107,7 +128,7 @@ export default async function UniversityProfilePage({ params }: { params: Promis
             <div className="bg-white rounded-xl border border-gray-200 p-5">
               <h2 className="font-bold text-gray-900 mb-3">Fakultas &amp; Program Studi</h2>
               <div className="space-y-2">
-                {uni.faculties.map(fac => (
+                {uni.faculties.map((fac: { id: string; name: string; programs: unknown[] }) => (
                   <div key={fac.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:border-[#F4A900] hover:bg-[#E8F0FB] transition-all cursor-pointer border-l-[3px] border-l-transparent hover:border-l-[#F4A900]">
                     <div>
                       <div className="text-sm font-bold text-gray-900">{fac.name}</div>
@@ -125,7 +146,7 @@ export default async function UniversityProfilePage({ params }: { params: Promis
             <div className="bg-white rounded-xl border border-gray-200 p-5">
               <h2 className="font-bold text-gray-900 mb-3">Ulasan Mahasiswa</h2>
               <div className="space-y-4">
-                {uni.reviews.map(rev => (
+                {uni.reviews.map((rev: { id: string; authorName: string; program?: string; graduationYear?: number; rating: number; content: string }) => (
                   <div key={rev.id} className="border border-gray-200 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-8 h-8 rounded-full bg-[#E8F0FB] flex items-center justify-center text-xs font-bold text-[#033F85]">
