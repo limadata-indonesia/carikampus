@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import Link from 'next/link'
 
 interface Program {
   id: string
@@ -23,7 +24,7 @@ const DEGREE_COLORS: Record<string, string> = {
   D4: 'bg-teal-100 text-teal-700',
 }
 
-export default function FacultyAccordion({ faculties }: { faculties: Faculty[] }) {
+export default function FacultyAccordion({ faculties, uniSlug }: { faculties: Faculty[]; uniSlug: string }) {
   const [open, setOpen] = useState<string | null>(null)
 
   return (
@@ -81,7 +82,13 @@ export default function FacultyAccordion({ faculties }: { faculties: Faculty[] }
                           )}
                         </div>
                       </div>
-                      <span className="text-[11px] font-semibold text-[#033F85] whitespace-nowrap mt-0.5">Lihat →</span>
+                      <Link
+                        href={`/universitas/${uniSlug}/program/${prog.id}`}
+                        className="text-[11px] font-semibold text-[#033F85] whitespace-nowrap mt-0.5 hover:underline"
+                        onClick={e => e.stopPropagation()}
+                      >
+                        Lihat →
+                      </Link>
                     </div>
                   ))
                 )}

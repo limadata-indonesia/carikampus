@@ -128,7 +128,7 @@ export default async function UniversityProfilePage({ params }: { params: Promis
           {uni.faculties.length > 0 && (
             <div className="bg-white rounded-xl border border-gray-200 p-5">
               <h2 className="font-bold text-gray-900 mb-3">Fakultas &amp; Program Studi</h2>
-              <FacultyAccordion faculties={uni.faculties} />
+              <FacultyAccordion faculties={uni.faculties} uniSlug={slug} />
             </div>
           )}
 
