@@ -1,8 +1,5 @@
-'use client'
-
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { cn } from '@/lib/utils'
+import NavLink from './NavLink'
 
 const NAV_LINKS = [
   { href: '/cari',      label: 'Universitas' },
@@ -11,15 +8,13 @@ const NAV_LINKS = [
 ]
 
 export default function Navbar() {
-  const pathname = usePathname()
-
   return (
     <nav className="sticky top-0 z-50 bg-[#033F85] border-b-[3px] border-[#F4A900]">
       <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
 
         {/* Brand */}
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-[#F4A900] rounded-md flex items-center justify-center font-black text-[#033F85] text-sm">
+          <div className="w-8 h-8 bg-[#F4A900] rounded-md flex items-center justify-center font-black text-[#033F85] text-sm" aria-hidden="true">
             CK
           </div>
           <div>
@@ -31,18 +26,7 @@ export default function Navbar() {
         {/* Links */}
         <div className="hidden md:flex items-center gap-1">
           {NAV_LINKS.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className={cn(
-                'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
-                pathname.startsWith(href)
-                  ? 'bg-white/20 text-white'
-                  : 'text-white/80 hover:bg-white/15 hover:text-white'
-              )}
-            >
-              {label}
-            </Link>
+            <NavLink key={href} href={href} label={label} />
           ))}
         </div>
 

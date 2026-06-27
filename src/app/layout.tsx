@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { APP_CONFIG } from '@/config'
 
@@ -12,6 +12,13 @@ export const metadata: Metadata = {
     url: APP_CONFIG.url,
     siteName: APP_CONFIG.name,
   },
+  robots: { index: true, follow: true },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#033F85',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

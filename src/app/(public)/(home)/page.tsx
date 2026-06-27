@@ -1,27 +1,41 @@
-export const dynamic = "force-dynamic"
+// ISR: regenerate at most once per hour; served from edge cache for all users
+export const revalidate = 3600
+
 import Link from 'next/link'
 import { db } from '@/lib/db'
 import SearchForm from '@/components/ui/SearchForm'
 
-async function getHomeData() {
-  const [unis, students, featured] = await Promise.allSettled([
-    db.university.count({ where: { status: 'APPROVED' } }),
-    db.student.count(),
-    db.university.findMany({
-      where: { status: 'APPROVED' },
-      take: 10,
-      orderBy: [{ qsRanking: 'asc' }, { name: 'asc' }],
-      include: {
-        _count: { select: { reviews: true } },
-        reviews: { select: { rating: true } },
-        faculties: { include: { _count: { select: { programs: true } } } },
-      },
-    }),
-  ])
-  return {
-    universities: unis.status === 'fulfilled' ? unis.value : 0,
-    students:     students.status === 'fulfilled' ? students.value : 0,
-    featured:     featured.status === 'fulfilled' ? featured.value : [],
+type FeaturedUni = {
+  id: string
+  name: string
+  slug: string
+  city: string
+  type: string
+  accreditation: string | null
+  qsRanking: number | null
+  reviews: { rating: number }[]
+  faculties: { _count: { programs: number } }[]
+}
+
+async function getHomeData(): Promise<{ count: number; featured: FeaturedUni[] }> {
+  try {
+    const [count, featured] = await Promise.all([
+      db.university.count({ where: { status: 'APPROVED' } }),
+      db.university.findMany({
+        where: { status: 'APPROVED' },
+        take: 10,
+        orderBy: [{ qsRanking: 'asc' }, { name: 'asc' }],
+        select: {
+          id: true, name: true, slug: true, city: true,
+          type: true, accreditation: true, qsRanking: true,
+          reviews: { select: { rating: true } },
+          faculties: { select: { _count: { select: { programs: true } } } },
+        },
+      }),
+    ])
+    return { count, featured }
+  } catch {
+    return { count: 0, featured: [] }
   }
 }
 
@@ -30,9 +44,8 @@ const TYPE_LABELS: Record<string, string> = {
 }
 
 export default async function HomePage() {
-  const { universities, students, featured } = await getHomeData()
+  const { count, featured } = await getHomeData()
 
-  // fallback ordering: universities without QS rank go to end
   const sorted = [...featured].sort((a, b) => {
     if (a.qsRanking && b.qsRanking) return a.qsRanking - b.qsRanking
     if (a.qsRanking) return -1
@@ -57,16 +70,15 @@ export default async function HomePage() {
             Direktori universitas terlengkap, tes minat bakat psikometri, dan jalur karier — satu platform untuk masa depanmu.
           </p>
 
-          {/* Search */}
           <SearchForm />
 
           {/* Stats */}
           <div className="flex justify-center gap-10 pt-6 border-t border-white/15">
             {[
-              { val: universities > 0 ? `${universities}+` : '500+', lbl: 'Universitas' },
-              { val: '3.200+', lbl: 'Program Studi' },
-              { val: '34', lbl: 'Provinsi' },
-              { val: students > 0 ? `${(students / 1000).toFixed(0)}k+` : '48k+', lbl: 'Mahasiswa Terbantu' },
+              { val: count > 0 ? `${count}+` : '500+', lbl: 'Universitas' },
+              { val: '3.200+',  lbl: 'Program Studi' },
+              { val: '34',      lbl: 'Provinsi' },
+              { val: '48k+',    lbl: 'Mahasiswa Terbantu' },
             ].map(({ val, lbl }) => (
               <div key={lbl} className="text-center">
                 <div className="text-2xl font-bold text-[#F4A900]">{val}</div>
@@ -104,7 +116,7 @@ export default async function HomePage() {
                 <Link
                   key={uni.id}
                   href={`/universitas/${uni.slug}`}
-                  className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-[#B8CCE8] transition-all group"
+                  className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-[#B8CCE8] transition-[transform,box-shadow,border-color] group"
                 >
                   <div className="h-20 bg-gradient-to-br from-[#033F85] to-[#022D5E] flex items-center justify-center relative">
                     <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white font-bold text-xs">
@@ -164,7 +176,7 @@ export default async function HomePage() {
             { icon: '📝', title: 'Daftar & Bayar', desc: 'Submit pendaftaran dan bayar biaya registrasi langsung — GoPay, QRIS, Virtual Account bank tersedia.', color: 'bg-[#E6F4EC]' },
           ].map(({ icon, title, desc, color }) => (
             <div key={title} className="bg-white rounded-xl border border-gray-200 p-6 border-t-[3px] border-t-[#033F85]">
-              <div className={`w-11 h-11 ${color} rounded-lg flex items-center justify-center text-2xl mb-4`}>{icon}</div>
+              <div className={`w-11 h-11 ${color} rounded-lg flex items-center justify-center text-2xl mb-4`} aria-hidden="true">{icon}</div>
               <h3 className="font-bold text-gray-900 mb-2">{title}</h3>
               <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
             </div>
