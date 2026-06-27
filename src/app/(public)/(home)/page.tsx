@@ -97,13 +97,13 @@ export default async function HomePage() {
               {/* Stats row */}
               <div className="flex flex-wrap gap-6 mt-10">
                 {[
-                  { val: count > 0 ? `${count}+` : '500+', lbl: 'Universitas',       color: 'bg-[#033F85] text-white' },
-                  { val: '3.200+',                          lbl: 'Program Studi',     color: 'bg-[#F4A900] text-[#1A1520]' },
-                  { val: '34',                              lbl: 'Provinsi',           color: 'bg-[#2EC4B6] text-white' },
-                  { val: '48k+',                            lbl: 'Terbantu',           color: 'bg-[#1A1520] text-white' },
-                ].map(({ val, lbl, color }) => (
-                  <div key={lbl} className="flex items-center gap-2.5">
-                    <div className={`w-11 h-11 rounded-2xl ${color} flex items-center justify-center text-xs font-black leading-none text-center shrink-0`}>
+                  { val: count > 0 ? `${count}+` : '500+', lbl: 'Universitas',   color: 'bg-[#033F85] text-white',        size: 'text-sm' },
+                  { val: '3.200+',                          lbl: 'Program Studi', color: 'bg-[#F4A900] text-[#1A1520]',   size: 'text-[11px]' },
+                  { val: '34',                              lbl: 'Provinsi',       color: 'bg-[#2EC4B6] text-white',        size: 'text-sm' },
+                  { val: '48k+',                            lbl: 'Terbantu',       color: 'bg-[#1A1520] text-white',        size: 'text-sm' },
+                ].map(({ val, lbl, color, size }) => (
+                  <div key={lbl} className="flex items-center gap-3">
+                    <div className={`w-14 h-14 rounded-2xl ${color} ${size} flex items-center justify-center font-black leading-none text-center shrink-0`}>
                       {val}
                     </div>
                     <span className="text-sm font-semibold text-[#6B6575]">{lbl}</span>
