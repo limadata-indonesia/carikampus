@@ -1,6 +1,7 @@
 export const revalidate = 3600
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { db } from '@/lib/db'
 import SearchForm from '@/components/ui/SearchForm'
 
@@ -62,49 +63,106 @@ export default async function HomePage() {
   return (
     <>
       {/* ── HERO ─────────────────────────────── */}
-      <section className="bg-[#F8F6F0] pt-16 pb-20 overflow-hidden relative">
-        {/* decorative blobs */}
-        <div className="absolute top-8 right-0 w-72 h-72 rounded-full bg-[#F4A900]/20 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-20 w-48 h-48 rounded-full bg-[#2EC4B6]/15 blur-3xl pointer-events-none" />
+      <section className="bg-[#F8F6F0] pt-14 pb-16 overflow-hidden relative">
+        {/* background blobs */}
+        <div className="absolute top-0 right-1/3 w-96 h-96 rounded-full bg-[#F4A900]/15 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-64 h-64 rounded-full bg-[#2EC4B6]/10 blur-3xl pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-6">
-          {/* badge */}
-          <div className="inline-flex items-center gap-2 bg-[#F4A900]/20 text-[#1A1520] text-xs font-bold px-4 py-1.5 rounded-full mb-6">
-            <span className="w-2 h-2 rounded-full bg-[#F4A900] inline-block" />
-            Platform #1 Universitas Indonesia
-          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-          <h1 className="text-5xl md:text-6xl font-black text-[#1A1520] mb-5 leading-[1.05] tracking-tighter max-w-2xl">
-            Temukan kampus<br />
-            <span className="text-[#033F85]">&amp; karier</span>{' '}
-            <span className="relative inline-block">
-              untukmu
-              <span className="absolute -bottom-1 left-0 right-0 h-3 bg-[#F4A900]/40 -z-10 rounded" />
-            </span>{' '}
-            <span className="text-[#2EC4B6]">→</span>
-          </h1>
-
-          <p className="text-[#6B6575] text-lg mb-10 max-w-md leading-relaxed">
-            Direktori universitas terlengkap, tes minat bakat psikometri, dan jalur karier — satu platform untuk masa depanmu.
-          </p>
-
-          <SearchForm />
-
-          {/* Stats row */}
-          <div className="flex flex-wrap gap-8 mt-12">
-            {[
-              { val: count > 0 ? `${count}+` : '500+', lbl: 'Universitas', color: 'bg-[#033F85] text-white' },
-              { val: '3.200+',  lbl: 'Program Studi',       color: 'bg-[#F4A900] text-[#1A1520]' },
-              { val: '34',      lbl: 'Provinsi',             color: 'bg-[#2EC4B6] text-white' },
-              { val: '48k+',    lbl: 'Mahasiswa Terbantu',   color: 'bg-[#1A1520] text-white' },
-            ].map(({ val, lbl, color }) => (
-              <div key={lbl} className="flex items-center gap-3">
-                <div className={`w-12 h-12 rounded-2xl ${color} flex items-center justify-center text-sm font-black leading-none text-center`}>
-                  {val}
-                </div>
-                <span className="text-sm font-semibold text-[#6B6575]">{lbl}</span>
+            {/* ── LEFT: copy ── */}
+            <div>
+              <div className="inline-flex items-center gap-2 bg-[#F4A900]/20 text-[#1A1520] text-xs font-bold px-4 py-1.5 rounded-full mb-6">
+                <span className="w-2 h-2 rounded-full bg-[#F4A900] inline-block" />
+                Platform #1 Universitas Indonesia
               </div>
-            ))}
+
+              <h1 className="text-5xl md:text-6xl font-black text-[#1A1520] mb-5 leading-[1.05] tracking-tighter">
+                Temukan kampus<br />
+                <span className="text-[#033F85]">&amp; karier</span>{' '}
+                <span className="relative inline-block">
+                  untukmu
+                  <span className="absolute -bottom-1 left-0 right-0 h-3 bg-[#F4A900]/40 -z-10 rounded" />
+                </span>{' '}
+                <span className="text-[#2EC4B6]">→</span>
+              </h1>
+
+              <p className="text-[#6B6575] text-lg mb-8 max-w-md leading-relaxed">
+                Direktori universitas terlengkap, tes minat bakat psikometri, dan jalur karier — satu platform untuk masa depanmu.
+              </p>
+
+              <SearchForm />
+
+              {/* Stats row */}
+              <div className="flex flex-wrap gap-6 mt-10">
+                {[
+                  { val: count > 0 ? `${count}+` : '500+', lbl: 'Universitas',       color: 'bg-[#033F85] text-white' },
+                  { val: '3.200+',                          lbl: 'Program Studi',     color: 'bg-[#F4A900] text-[#1A1520]' },
+                  { val: '34',                              lbl: 'Provinsi',           color: 'bg-[#2EC4B6] text-white' },
+                  { val: '48k+',                            lbl: 'Terbantu',           color: 'bg-[#1A1520] text-white' },
+                ].map(({ val, lbl, color }) => (
+                  <div key={lbl} className="flex items-center gap-2.5">
+                    <div className={`w-11 h-11 rounded-2xl ${color} flex items-center justify-center text-xs font-black leading-none text-center shrink-0`}>
+                      {val}
+                    </div>
+                    <span className="text-sm font-semibold text-[#6B6575]">{lbl}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ── RIGHT: photo collage ── */}
+            <div className="relative h-[520px] hidden lg:block">
+              {/* Main photo — man in suit, large left */}
+              <div className="absolute left-0 top-4 w-56 h-[440px] rounded-3xl overflow-hidden shadow-2xl"
+                   style={{ transform: 'rotate(-2deg)' }}>
+                <Image
+                  src="/hero-1.jpg"
+                  alt="Profesional muda"
+                  fill
+                  className="object-cover object-top"
+                  sizes="224px"
+                  priority
+                />
+              </div>
+
+              {/* Graduation photo 1 — top right */}
+              <div className="absolute right-4 top-0 w-52 h-64 rounded-3xl overflow-hidden shadow-xl"
+                   style={{ transform: 'rotate(2.5deg)' }}>
+                <Image
+                  src="/hero-2.jpg"
+                  alt="Wisudawan"
+                  fill
+                  className="object-cover object-top"
+                  sizes="208px"
+                />
+              </div>
+
+              {/* Graduation photo 2 — bottom right */}
+              <div className="absolute right-0 bottom-0 w-52 h-60 rounded-3xl overflow-hidden shadow-xl"
+                   style={{ transform: 'rotate(-1.5deg)' }}>
+                <Image
+                  src="/hero-3.jpg"
+                  alt="Wisudawan Brawijaya"
+                  fill
+                  className="object-cover object-top"
+                  sizes="208px"
+                />
+              </div>
+
+              {/* Floating badge */}
+              <div className="absolute left-48 top-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-xl px-4 py-3 z-10 border border-gray-100">
+                <div className="text-xs text-[#6B6575] font-semibold mb-0.5">Lulusan terbaik</div>
+                <div className="text-sm font-black text-[#1A1520]">500+ Kampus</div>
+                <div className="flex -space-x-1.5 mt-1.5">
+                  {['#033F85','#F4A900','#2EC4B6'].map(c => (
+                    <div key={c} className="w-5 h-5 rounded-full border-2 border-white" style={{ background: c }} />
+                  ))}
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
