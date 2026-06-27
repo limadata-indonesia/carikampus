@@ -334,8 +334,8 @@ export default async function HomePage() {
           <div className="bg-[#F4A900] rounded-3xl p-8 relative overflow-hidden">
             <div className="absolute -top-6 -right-6 w-32 h-32 rounded-full bg-white/20" />
             <div className="absolute bottom-4 right-8 w-16 h-16 rounded-full bg-white/10" />
-            <h3 className="font-black text-[#1A1520] text-2xl mb-3 tracking-tight leading-tight">Daftarkan<br />Universitas Kamu</h3>
-            <p className="text-[#1A1520]/70 text-sm leading-relaxed mb-6">Jangkau ribuan calon mahasiswa di seluruh Indonesia. Buat profil, kelola program studi, dan terima pendaftaran langsung.</p>
+            <h3 className="font-black text-white text-2xl mb-3 tracking-tight leading-tight">Daftarkan<br />Universitas Kamu</h3>
+            <p className="text-white/70 text-sm leading-relaxed mb-6">Jangkau ribuan calon mahasiswa di seluruh Indonesia. Buat profil, kelola program studi, dan terima pendaftaran langsung.</p>
             <Link href="/daftar/universitas" className="inline-flex items-center gap-2 bg-[#1A1520] text-white text-sm font-black px-5 py-2.5 rounded-full hover:bg-[#033F85] transition-colors">
               Daftar Sekarang →
             </Link>
