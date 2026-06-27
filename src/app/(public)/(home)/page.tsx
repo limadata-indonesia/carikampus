@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic"
 import Link from 'next/link'
-import { PROVINCES } from '@/config'
 import { db } from '@/lib/db'
+import SearchForm from '@/components/ui/SearchForm'
 
 async function getHomeData() {
   const [unis, students, featured] = await Promise.allSettled([
@@ -58,24 +58,7 @@ export default async function HomePage() {
           </p>
 
           {/* Search */}
-          <form action="/cari" method="get" className="flex max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-2xl mb-8">
-            <input
-              name="q"
-              type="text"
-              placeholder="Cari universitas, jurusan, atau kota..."
-              className="flex-1 px-4 py-3.5 text-sm text-gray-800 outline-none"
-            />
-            <select name="province" className="border-l border-gray-200 px-3 py-3.5 text-sm text-gray-500 bg-white outline-none">
-              <option value="">Semua provinsi</option>
-              {PROVINCES.map(p => <option key={p}>{p}</option>)}
-            </select>
-            <button
-              type="submit"
-              className="bg-[#F4A900] text-[#033F85] px-5 py-3.5 text-sm font-bold hover:bg-[#D99200] transition-colors whitespace-nowrap"
-            >
-              Cari
-            </button>
-          </form>
+          <SearchForm />
 
           {/* Stats */}
           <div className="flex justify-center gap-10 pt-6 border-t border-white/15">

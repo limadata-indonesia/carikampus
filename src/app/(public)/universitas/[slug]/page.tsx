@@ -5,9 +5,13 @@ import { formatRupiah, formatDate } from '@/lib/utils'
 import Link from 'next/link'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const uni = await db.university.findUnique({ where: { slug: (await params).slug } })
-  if (!uni) return {}
-  return { title: uni.name, description: uni.description || `Profil ${uni.name} di CariKampus.id` }
+  try {
+    const uni = await db.university.findFirst({ where: { slug: (await params).slug } })
+    if (!uni) return {}
+    return { title: uni.name, description: uni.description || `Profil ${uni.name} di CariKampus.id` }
+  } catch {
+    return {}
+  }
 }
 
 export default async function UniversityProfilePage({ params }: { params: Promise<{ slug: string }> }) {
