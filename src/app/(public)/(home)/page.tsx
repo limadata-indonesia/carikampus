@@ -95,18 +95,18 @@ export default async function HomePage() {
               <SearchForm />
 
               {/* Stats row */}
-              <div className="flex flex-wrap gap-7 mt-10">
+              <div className="flex flex-wrap gap-8 mt-10 bg-[#033F85] rounded-2xl px-6 py-4">
                 {[
-                  { val: count > 0 ? `${count}+` : '500+', lbl: 'Universitas',   color: 'text-[#033F85]' },
-                  { val: '3.200+',                          lbl: 'Program Studi', color: 'text-[#F4A900]' },
-                  { val: '34',                              lbl: 'Provinsi',       color: 'text-[#2EC4B6]' },
-                  { val: '48k+',                            lbl: 'Mahasiswa',      color: 'text-[#FF6B35]' },
-                  { val: '200+',                            lbl: 'Mitra Industri', color: 'text-[#7C3AED]' },
-                  { val: '4.9★',                            lbl: 'Rating',         color: 'text-[#1A1520]' },
-                ].map(({ val, lbl, color }) => (
+                  { val: count > 0 ? `${count}+` : '500+', lbl: 'Universitas'   },
+                  { val: '3.200+',                          lbl: 'Program Studi' },
+                  { val: '34',                              lbl: 'Provinsi'       },
+                  { val: '48k+',                            lbl: 'Mahasiswa'      },
+                  { val: '200+',                            lbl: 'Mitra Industri' },
+                  { val: '4.9★',                            lbl: 'Rating'         },
+                ].map(({ val, lbl }) => (
                   <div key={lbl} className="text-center">
-                    <div className={`text-2xl font-black ${color} leading-none`}>{val}</div>
-                    <div className="text-xs text-[#6B6575] uppercase tracking-widest mt-1.5 font-semibold">{lbl}</div>
+                    <div className="text-2xl font-black text-white leading-none">{val}</div>
+                    <div className="text-xs text-white/60 uppercase tracking-widest mt-1.5 font-semibold">{lbl}</div>
                   </div>
                 ))}
               </div>
