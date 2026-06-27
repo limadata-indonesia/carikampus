@@ -9,8 +9,7 @@ async function getHomeData() {
     db.student.count(),
     db.university.findMany({
       where: { status: 'APPROVED' },
-      take: 8,
-      orderBy: { qsRanking: 'asc' },
+      orderBy: [{ qsRanking: 'asc' }, { name: 'asc' }],
       include: {
         _count: { select: { reviews: true } },
         reviews: { select: { rating: true } },
@@ -79,22 +78,26 @@ export default async function HomePage() {
 
       {/* Universitas Unggulan */}
       {sorted.length > 0 && (
-        <section className="max-w-6xl mx-auto px-6 py-12">
+        <section className="max-w-7xl mx-auto px-6 py-12">
           <div className="flex items-start justify-between mb-6">
             <div>
               <h2 className="text-xl font-bold text-gray-900">Universitas Unggulan</h2>
+              <p className="text-sm text-gray-400 mt-1">{sorted.length} universitas terdaftar</p>
               <div className="w-8 h-0.5 bg-[#F4A900] mt-1 rounded" />
             </div>
             <Link href="/cari" className="text-sm font-semibold text-[#033F85] hover:underline">Lihat semua →</Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {sorted.map(uni => {
               const avgRating = uni.reviews.length
                 ? (uni.reviews.reduce((s, r) => s + r.rating, 0) / uni.reviews.length).toFixed(1)
                 : null
               const totalPrograms = uni.faculties.reduce((s, f) => s + f._count.programs, 0)
-              const initial = uni.name.split(' ').filter(w => w.length > 2).map(w => w[0]).join('').slice(0, 3).toUpperCase()
+              const words = uni.name.split(' ').filter(w => w.length > 2)
+              const initial = words.length >= 2
+                ? words.slice(0, 3).map(w => w[0]).join('').toUpperCase()
+                : uni.name.slice(0, 3).toUpperCase()
 
               return (
                 <Link
@@ -102,40 +105,39 @@ export default async function HomePage() {
                   href={`/universitas/${uni.slug}`}
                   className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-[#B8CCE8] transition-all group"
                 >
-                  {/* Card header */}
-                  <div className="h-24 bg-gradient-to-br from-[#033F85] to-[#022D5E] flex items-center justify-center relative">
-                    <div className="w-14 h-14 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white font-bold text-sm">
+                  <div className="h-20 bg-gradient-to-br from-[#033F85] to-[#022D5E] flex items-center justify-center relative">
+                    <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white font-bold text-xs">
                       {initial}
                     </div>
                     {uni.qsRanking && (
-                      <div className="absolute top-2 right-2 bg-[#F4A900] text-[#033F85] text-xs font-bold px-2 py-0.5 rounded-full">
+                      <div className="absolute top-2 right-2 bg-[#F4A900] text-[#033F85] text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                         QS #{uni.qsRanking}
                       </div>
                     )}
                   </div>
 
-                  <div className="p-4">
-                    <div className="font-bold text-gray-900 text-sm mb-0.5 group-hover:text-[#033F85] transition-colors line-clamp-2 leading-snug">
+                  <div className="p-3">
+                    <div className="font-bold text-gray-900 text-xs mb-0.5 group-hover:text-[#033F85] transition-colors line-clamp-2 leading-snug min-h-[2.5rem]">
                       {uni.name}
                     </div>
-                    <div className="text-xs text-gray-400 mb-3">{uni.city}, {uni.province}</div>
+                    <div className="text-[11px] text-gray-400 mb-2 truncate">{uni.city}</div>
 
-                    <div className="flex gap-1.5 flex-wrap mb-3">
-                      <span className="text-xs font-semibold bg-[#E8F0FB] text-[#033F85] px-2 py-0.5 rounded-full">
+                    <div className="flex gap-1 flex-wrap mb-2">
+                      <span className="text-[10px] font-semibold bg-[#E8F0FB] text-[#033F85] px-1.5 py-0.5 rounded-full">
                         {TYPE_LABELS[uni.type] ?? uni.type}
                       </span>
                       {uni.accreditation && (
-                        <span className="text-xs font-semibold bg-[#E6F4EC] text-green-700 px-2 py-0.5 rounded-full">
-                          Ak. {uni.accreditation}
+                        <span className="text-[10px] font-semibold bg-[#E6F4EC] text-green-700 px-1.5 py-0.5 rounded-full">
+                          Ak.{uni.accreditation}
                         </span>
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between text-xs text-gray-400 border-t border-gray-100 pt-2.5 mt-2.5">
+                    <div className="flex items-center justify-between text-[11px] text-gray-400 border-t border-gray-100 pt-2 mt-1">
                       <span>{totalPrograms} prodi</span>
                       {avgRating
                         ? <span>⭐ {avgRating}</span>
-                        : <span className="text-[#033F85] font-semibold">Lihat profil →</span>
+                        : <span className="text-[#033F85] font-semibold">→</span>
                       }
                     </div>
                   </div>
