@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function UniversityProfilePage({ params }: { params: Promise<{ slug: string }> }) {
-  const uni = await db.university.findUnique({
+  const uni = await db.university.findFirst({
     where: { slug: (await params).slug, status: 'APPROVED' },
     include: {
       faculties: { include: { programs: true } },
