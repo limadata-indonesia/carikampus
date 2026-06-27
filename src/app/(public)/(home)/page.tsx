@@ -123,15 +123,31 @@ export default async function HomePage() {
               <div className="absolute"
                 style={{ width: 200, height: 200, top: 120, right: 60, borderRadius: '50%', background: '#FEF3D0', zIndex: 0 }} />
 
+              {/* Photo 4 — UIN Jakarta (new) — ARCH, far-left, behind man */}
+              <div className="absolute overflow-hidden shadow-lg"
+                style={{
+                  width: 155, height: 290,
+                  left: 0, top: 60,
+                  borderRadius: '9999px 9999px 22px 22px',
+                  background: '#FFE8D6',
+                  padding: 7,
+                  transform: 'rotate(-7deg)',
+                  zIndex: 1,
+                }}>
+                <div style={{ width: '100%', height: '100%', borderRadius: '9999px 9999px 15px 15px', overflow: 'hidden', position: 'relative' }}>
+                  <Image src="/hero-4.jpg" alt="Wisudawan UIN Jakarta" fill className="object-cover object-top" sizes="141px" />
+                </div>
+              </div>
+
               {/* Photo 1 — man in suit — ARCH, center-left, largest */}
               <div className="absolute overflow-hidden shadow-2xl"
                 style={{
                   width: 196, height: 360,
-                  left: 30, top: 30,
+                  left: 100, top: 20,
                   borderRadius: '9999px 9999px 28px 28px',
                   background: '#FEF3D0',
                   padding: 8,
-                  transform: 'rotate(-4deg)',
+                  transform: 'rotate(-2deg)',
                   zIndex: 2,
                 }}>
                 <div style={{ width: '100%', height: '100%', borderRadius: '9999px 9999px 20px 20px', overflow: 'hidden', position: 'relative' }}>
@@ -191,7 +207,7 @@ export default async function HomePage() {
 
               {/* Floating stat card */}
               <div className="absolute bg-white rounded-2xl shadow-xl px-4 py-3 border border-gray-100"
-                style={{ left: 200, bottom: 80, zIndex: 6 }}>
+                style={{ left: 270, bottom: 80, zIndex: 6 }}>
                 <div className="text-[10px] text-[#6B6575] font-semibold uppercase tracking-wide">Bergabung</div>
                 <div className="text-sm font-black text-[#1A1520] mt-0.5">48k+ Mahasiswa</div>
                 <div className="flex -space-x-1.5 mt-1.5">
