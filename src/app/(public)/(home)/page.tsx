@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { db } from '@/lib/db'
 import SearchForm from '@/components/ui/SearchForm'
+import SlideInCards from '@/components/ui/SlideInCards'
 
 type FeaturedUni = {
   id: string
@@ -172,8 +173,9 @@ export default async function HomePage() {
             </Link>
           </div>
 
+          <SlideInCards>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {sorted.map(uni => {
+            {sorted.map((uni, i) => {
               const avgRating = uni.reviews.length
                 ? (uni.reviews.reduce((s, r) => s + r.rating, 0) / uni.reviews.length).toFixed(1)
                 : null
@@ -187,7 +189,9 @@ export default async function HomePage() {
                 <Link
                   key={uni.id}
                   href={`/universitas/${uni.slug}`}
-                  className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:-translate-y-1.5 hover:shadow-xl transition-[transform,box-shadow] group"
+                  data-slide
+                  data-delay={i * 60}
+                  className="slide-in-card bg-white rounded-2xl border border-gray-100 overflow-hidden hover:-translate-y-1.5 hover:shadow-xl transition-[transform,box-shadow,opacity] group"
                   style={{ boxShadow: '0 2px 12px rgba(26,21,32,0.06)' }}
                 >
                   {/* Card header */}
@@ -231,6 +235,7 @@ export default async function HomePage() {
               )
             })}
           </div>
+          </SlideInCards>
         </section>
       )}
 
