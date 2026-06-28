@@ -73,12 +73,12 @@ export default async function HomePage() {
 
             {/* ── LEFT: copy ── */}
             <div>
-              <div className="inline-flex items-center gap-2 bg-[#F4A900]/20 text-[#1A1520] text-xs font-bold px-4 py-1.5 rounded-full mb-6">
+              <div className="inline-flex items-center gap-2 bg-[#F4A900]/20 text-[#0F0D14] text-xs font-bold px-4 py-1.5 rounded-full mb-6">
                 <span className="w-2 h-2 rounded-full bg-[#F4A900] inline-block" />
                 Platform #1 Universitas Indonesia
               </div>
 
-              <h1 className="text-5xl md:text-6xl font-black text-[#1A1520] mb-5 leading-[1.05] tracking-tighter">
+              <h1 className="text-5xl md:text-6xl font-black text-[#0F0D14] mb-5 leading-[1.05] tracking-tighter">
                 Temukan kampus<br />
                 <span className="text-[#033F85]">&amp; karier</span>{' '}
                 <span className="relative inline-block">
@@ -88,14 +88,14 @@ export default async function HomePage() {
                 <span className="text-[#2EC4B6]">→</span>
               </h1>
 
-              <p className="text-[#6B6575] text-lg mb-8 max-w-md leading-relaxed">
+              <p className="text-[#4A4555] text-lg mb-8 max-w-md leading-relaxed">
                 Direktori universitas terlengkap, tes minat bakat psikometri, dan jalur karier — satu platform untuk masa depanmu.
               </p>
 
               <SearchForm />
 
               <div className="flex flex-wrap items-center gap-2 mt-4">
-                <span className="text-xs text-[#6B6575]">Populer:</span>
+                <span className="text-xs text-[#4A4555]">Populer:</span>
                 {['Universitas Indonesia', 'ITB', 'UGM', 'Unair', 'UI', 'Binus'].map(q => (
                   <a
                     key={q}
@@ -165,7 +165,7 @@ export default async function HomePage() {
           <div className="flex items-end justify-between mb-8">
             <div>
               <p className="text-xs font-black uppercase tracking-widest text-[#2EC4B6] mb-1">Pilihan Terbaik</p>
-              <h2 className="text-3xl font-black text-[#1A1520] tracking-tight">Universitas Unggulan</h2>
+              <h2 className="text-3xl font-black text-[#0F0D14] tracking-tight">Universitas Unggulan</h2>
             </div>
             <Link href="/cari" className="inline-flex items-center gap-1.5 text-sm font-bold text-[#033F85] bg-[#E8F0FB] px-4 py-2 rounded-full hover:bg-[#033F85] hover:text-white transition-colors">
               Lihat semua →
@@ -196,17 +196,17 @@ export default async function HomePage() {
                       {initial}
                     </div>
                     {uni.qsRanking && (
-                      <div className="absolute top-2 right-2 bg-[#F4A900] text-[#1A1520] text-[10px] font-black px-2 py-0.5 rounded-full">
+                      <div className="absolute top-2 right-2 bg-[#F4A900] text-[#0F0D14] text-[10px] font-black px-2 py-0.5 rounded-full">
                         #{uni.qsRanking}
                       </div>
                     )}
                   </div>
 
                   <div className="p-3">
-                    <div className="font-extrabold text-[#1A1520] text-xs mb-0.5 group-hover:text-[#033F85] transition-colors line-clamp-2 leading-snug min-h-[2.5rem]">
+                    <div className="font-extrabold text-[#0F0D14] text-xs mb-0.5 group-hover:text-[#033F85] transition-colors line-clamp-2 leading-snug min-h-[2.5rem]">
                       {uni.name}
                     </div>
-                    <div className="text-[11px] text-[#6B6575] mb-2 truncate">{uni.city}</div>
+                    <div className="text-[11px] text-[#4A4555] mb-2 truncate">{uni.city}</div>
 
                     <div className="flex gap-1 flex-wrap mb-2">
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${TYPE_COLORS[uni.type] ?? 'bg-gray-100 text-gray-500'}`}>
@@ -219,7 +219,7 @@ export default async function HomePage() {
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between text-[11px] text-[#6B6575] border-t border-gray-100 pt-2">
+                    <div className="flex items-center justify-between text-[11px] text-[#4A4555] border-t border-gray-100 pt-2">
                       <span>{totalPrograms} prodi</span>
                       {avgRating
                         ? <span className="font-bold">⭐ {avgRating}</span>
@@ -239,7 +239,7 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
             <p className="text-xs font-black uppercase tracking-widest text-[#2EC4B6] mb-2">Simple & Mudah</p>
-            <h2 className="text-3xl font-black text-[#1A1520] tracking-tight">Cara Kerjanya</h2>
+            <h2 className="text-3xl font-black text-[#0F0D14] tracking-tight">Cara Kerjanya</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -253,8 +253,8 @@ export default async function HomePage() {
                   <div className={`w-14 h-14 ${bg} rounded-2xl flex items-center justify-center text-2xl`} aria-hidden="true">{icon}</div>
                   <span className="text-4xl font-black text-gray-100 group-hover:text-gray-200 transition-colors">{num}</span>
                 </div>
-                <h3 className="font-black text-[#1A1520] mb-2 text-lg tracking-tight">{title}</h3>
-                <p className="text-sm text-[#6B6575] leading-relaxed">{desc}</p>
+                <h3 className="font-black text-[#0F0D14] mb-2 text-lg tracking-tight">{title}</h3>
+                <p className="text-sm text-[#4A4555] leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>
@@ -281,7 +281,7 @@ export default async function HomePage() {
             <div className="absolute bottom-4 right-8 w-16 h-16 rounded-full bg-[#F4A900]/20" />
             <h3 className="font-black text-white text-2xl mb-3 tracking-tight leading-tight">Program Sekolah<br /><span className="text-[#F4A900]">Akses Gratis</span></h3>
             <p className="text-white/70 text-sm leading-relaxed mb-6">Kode akses batch gratis untuk sekolah mitra. Tes minat bakat untuk siswa kelas 12 sebagai persiapan kuliah.</p>
-            <Link href="/tes-minat" className="inline-flex items-center gap-2 bg-[#F4A900] text-[#1A1520] text-sm font-black px-5 py-2.5 rounded-full hover:bg-[#D99200] transition-colors">
+            <Link href="/tes-minat" className="inline-flex items-center gap-2 bg-[#F4A900] text-[#0F0D14] text-sm font-black px-5 py-2.5 rounded-full hover:bg-[#D99200] transition-colors">
               Info Program Sekolah →
             </Link>
           </div>

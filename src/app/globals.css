@@ -10,8 +10,8 @@
   --color-gold-h:     #D99200;
   --color-gold-l:     #FEF3D0;
   --color-cream:      #F8F6F0;
-  --color-ink:        #1A1520;
-  --color-ink-muted:  #6B6575;
+  --color-ink:        #0F0D14;
+  --color-ink-muted:  #4A4555;
   --color-teal:       #2EC4B6;
   --color-teal-l:     #E0F7F5;
   --radius-pill:      9999px;
@@ -27,8 +27,11 @@ body {
   margin: 0;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background: var(--color-cream);
-  color: var(--color-ink);
+  color: #0F0D14;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+  line-height: 1.65;
   letter-spacing: -0.01em;
 }
 
@@ -36,7 +39,8 @@ body {
 h1, h2, h3, h4 {
   font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 1.1;
+  line-height: 1.15;
+  color: #0A0812;
 }
 
 /* ── SCROLLBAR ───────────────────────────── */

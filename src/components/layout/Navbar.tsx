@@ -37,7 +37,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           <Link
             href="/masuk"
-            className="px-4 py-2 text-sm font-bold text-[#1A1520] border-2 border-gray-200 rounded-full hover:border-[#033F85] hover:text-[#033F85] transition-colors"
+            className="px-4 py-2 text-sm font-bold text-[#0F0D14] border-2 border-gray-200 rounded-full hover:border-[#033F85] hover:text-[#033F85] transition-colors"
           >
             Masuk
           </Link>

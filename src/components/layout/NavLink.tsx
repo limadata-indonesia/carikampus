@@ -11,7 +11,7 @@ export default function NavLink({ href, label }: { href: string; label: string }
       className={`px-4 py-1.5 rounded-full text-sm font-bold transition-all ${
         active
           ? 'bg-[#033F85] text-white shadow-sm'
-          : 'text-gray-500 hover:text-[#1A1520] hover:bg-white'
+          : 'text-gray-500 hover:text-[#0F0D14] hover:bg-white'
       }`}
     >
       {label}

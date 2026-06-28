@@ -23,7 +23,7 @@ export default function SearchForm() {
         value={q}
         onChange={e => setQ(e.target.value)}
         placeholder="Cari universitas, jurusan, atau kota..."
-        className="flex-1 px-5 py-4 text-sm text-[#1A1520] outline-none placeholder:text-gray-400"
+        className="flex-1 px-5 py-4 text-sm text-[#0F0D14] outline-none placeholder:text-gray-400"
       />
       <select
         value={province}
