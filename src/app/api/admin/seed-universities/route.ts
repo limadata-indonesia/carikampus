@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { db } from '@/lib/db'
 
 const UNIVERSITIES = [
@@ -533,6 +534,10 @@ export async function GET() {
       })
       created.push(created_uni.name)
     }
+
+    // Clear ISR cache so homepage shows fresh data immediately
+    revalidatePath('/')
+    revalidatePath('/cari')
 
     return NextResponse.json({
       ok: true,
