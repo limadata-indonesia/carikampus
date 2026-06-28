@@ -1,7 +1,8 @@
 export const dynamic = "force-dynamic"
+import { Suspense } from 'react'
 import { db } from '@/lib/db'
 import Link from 'next/link'
-import { PROVINCES } from '@/config'
+import SidebarFilters from './SidebarFilters'
 
 interface SearchParams { province?: string; type?: string; accreditation?: string; q?: string }
 
@@ -65,85 +66,9 @@ export default async function CariPage({ searchParams }: { searchParams: Promise
         <div className="flex gap-8 items-start">
 
           {/* ── SIDEBAR ── */}
-          <aside className="w-64 flex-shrink-0">
-            <form method="GET" className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-6 sticky top-20">
-
-              {/* Search */}
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-[#4A4555] mb-2">Cari</label>
-                <input
-                  name="q"
-                  defaultValue={sp.q}
-                  placeholder="Nama, kota..."
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#033F85] focus:ring-2 focus:ring-[#033F85]/10 transition"
-                />
-              </div>
-
-              {/* Province */}
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-[#4A4555] mb-2">Provinsi</label>
-                <select
-                  name="province"
-                  defaultValue={sp.province}
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#033F85] bg-white"
-                >
-                  <option value="">Semua Provinsi</option>
-                  {PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
-                </select>
-              </div>
-
-              {/* Type */}
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-[#4A4555] mb-2">Tipe</label>
-                <div className="space-y-2">
-                  {[['', 'Semua'], ['PRIVATE', 'Swasta'], ['NEGERI', 'Negeri'], ['KEAGAMAAN', 'Keagamaan'], ['KEDINASAN', 'Kedinasan']].map(([val, lbl]) => (
-                    <label key={val} className="flex items-center gap-2.5 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="type"
-                        value={val}
-                        defaultChecked={(sp.type ?? '') === val}
-                        className="accent-[#033F85]"
-                      />
-                      <span className="text-sm text-[#0F0D14]">{lbl}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Accreditation */}
-              <div>
-                <label className="block text-xs font-black uppercase tracking-widest text-[#4A4555] mb-2">Akreditasi</label>
-                <div className="space-y-2">
-                  {[['', 'Semua'], ['Unggul', 'Unggul'], ['A', 'A'], ['B', 'B'], ['C', 'C']].map(([val, lbl]) => (
-                    <label key={val} className="flex items-center gap-2.5 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="accreditation"
-                        value={val}
-                        defaultChecked={(sp.accreditation ?? '') === val}
-                        className="accent-[#033F85]"
-                      />
-                      <span className="text-sm text-[#0F0D14]">{lbl}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-[#033F85] text-white py-2.5 rounded-xl text-sm font-black hover:bg-[#022D5E] transition-colors"
-              >
-                Terapkan Filter
-              </button>
-
-              {(sp.q || sp.province || sp.type || sp.accreditation) && (
-                <Link href="/cari" className="block text-center text-xs text-[#4A4555] hover:text-[#033F85] transition-colors">
-                  Reset filter
-                </Link>
-              )}
-            </form>
-          </aside>
+          <Suspense fallback={<div className="w-64 flex-shrink-0 h-96 bg-white rounded-2xl border border-gray-100 animate-pulse" />}>
+            <SidebarFilters />
+          </Suspense>
 
           {/* ── LIST ── */}
           <div className="flex-1 min-w-0 space-y-3">
