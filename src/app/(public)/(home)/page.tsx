@@ -23,7 +23,7 @@ async function getHomeData(): Promise<{ count: number; featured: FeaturedUni[] }
       db.university.count({ where: { status: 'APPROVED' } }),
       db.university.findMany({
         where: { status: 'APPROVED' },
-        take: 10,
+        take: 20,
         orderBy: [{ qsRanking: 'asc' }, { name: 'asc' }],
         select: {
           id: true, name: true, slug: true, city: true,
