@@ -29,8 +29,8 @@ export default function UniversitySlider({ universities }: { universities: Uni[]
   const [canPrev, setCanPrev] = useState(false)
   const [canNext, setCanNext] = useState(true)
 
-  const CARD_W = 360 // px — must match card width below
-  const GAP    = 20
+  const CARD_W = 210 // px — must match card width below
+  const GAP    = 16
 
   const checkScroll = () => {
     const el = trackRef.current
@@ -50,7 +50,7 @@ export default function UniversitySlider({ universities }: { universities: Uni[]
   const slide = (dir: 'prev' | 'next') => {
     const el = trackRef.current
     if (!el) return
-    const step = (CARD_W + GAP) * 2
+    const step = (CARD_W + GAP) * 3
     el.scrollBy({ left: dir === 'next' ? step : -step, behavior: 'smooth' })
   }
 
@@ -91,33 +91,33 @@ export default function UniversitySlider({ universities }: { universities: Uni[]
               style={{ width: CARD_W, scrollSnapAlign: 'start', boxShadow: '0 2px 12px rgba(26,21,32,0.06)' }}
             >
               {/* Header */}
-              <div className="h-36 bg-gradient-to-br from-[#033F85] to-[#022D5E] flex items-center justify-center relative">
-                <div className="w-16 h-16 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center text-white font-black text-base">
+              <div className="h-24 bg-gradient-to-br from-[#033F85] to-[#022D5E] flex items-center justify-center relative">
+                <div className="w-12 h-12 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center text-white font-black text-sm">
                   {initial}
                 </div>
                 {uni.qsRanking && (
-                  <div className="absolute top-3 right-3 bg-[#F4A900] text-[#0F0D14] text-xs font-black px-2.5 py-1 rounded-full">
+                  <div className="absolute top-2 right-2 bg-[#F4A900] text-[#0F0D14] text-[10px] font-black px-2 py-0.5 rounded-full">
                     #{uni.qsRanking}
                   </div>
                 )}
               </div>
 
-              <div className="p-5">
-                <div className="font-extrabold text-[#0F0D14] text-base mb-1 group-hover:text-[#033F85] transition-colors line-clamp-2 leading-snug min-h-[3rem]">
+              <div className="p-3">
+                <div className="font-extrabold text-[#0F0D14] text-sm mb-0.5 group-hover:text-[#033F85] transition-colors line-clamp-2 leading-snug min-h-[2.5rem]">
                   {uni.name}
                 </div>
-                <div className="text-sm text-[#4A4555] mb-3 truncate">{uni.city}</div>
-                <div className="flex gap-1.5 flex-wrap mb-3">
-                  <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${TYPE_COLORS[uni.type] ?? 'bg-gray-100 text-gray-500'}`}>
+                <div className="text-xs text-[#4A4555] mb-2 truncate">{uni.city}</div>
+                <div className="flex gap-1 flex-wrap mb-2">
+                  <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${TYPE_COLORS[uni.type] ?? 'bg-gray-100 text-gray-500'}`}>
                     {TYPE_LABELS[uni.type] ?? uni.type}
                   </span>
                   {uni.accreditation && (
-                    <span className="text-xs font-bold bg-[#E0F7F5] text-[#2EC4B6] px-2.5 py-0.5 rounded-full">
+                    <span className="text-[11px] font-bold bg-[#E0F7F5] text-[#2EC4B6] px-2 py-0.5 rounded-full">
                       Ak.{uni.accreditation}
                     </span>
                   )}
                 </div>
-                <div className="flex items-center justify-between text-sm text-[#4A4555] border-t border-gray-100 pt-3">
+                <div className="flex items-center justify-between text-xs text-[#4A4555] border-t border-gray-100 pt-2">
                   <span>{totalPrograms} prodi</span>
                   {avgRating
                     ? <span className="font-bold">⭐ {avgRating}</span>
