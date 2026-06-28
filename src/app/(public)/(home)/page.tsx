@@ -152,18 +152,32 @@ export default async function HomePage() {
 
       {/* ── UNIVERSITAS UNGGULAN ─────────────── */}
       {sorted.length > 0 && (
-        <section className="max-w-7xl mx-auto px-6 py-16">
-          <div className="flex items-end justify-between mb-8">
-            <div>
-              <p className="text-xs font-black uppercase tracking-widest text-[#2EC4B6] mb-1">Pilihan Terbaik</p>
-              <h2 className="text-3xl font-black text-[#0F0D14] tracking-tight">Universitas Unggulan</h2>
-            </div>
-            <Link href="/cari" className="inline-flex items-center gap-1.5 text-sm font-bold text-[#033F85] bg-[#E8F0FB] px-4 py-2 rounded-full hover:bg-[#033F85] hover:text-white transition-colors">
-              Lihat semua →
-            </Link>
-          </div>
+        <section className="py-16 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6 flex gap-10 items-center">
 
-          <UniversitySlider universities={sorted} />
+            {/* Left: text + CTA */}
+            <div className="flex-shrink-0 w-56">
+              <p className="text-xs font-black uppercase tracking-widest text-[#2EC4B6] mb-3">Pilihan Terbaik</p>
+              <h2 className="text-3xl font-black text-[#0F0D14] tracking-tight leading-tight mb-4">
+                Universitas<br />Unggulan
+              </h2>
+              <p className="text-sm text-[#4A4555] leading-relaxed mb-6">
+                {count} kampus terdaftar dari seluruh Indonesia. Temukan yang paling cocok untukmu.
+              </p>
+              <Link
+                href="/cari"
+                className="inline-flex items-center gap-2 bg-[#033F85] text-white text-sm font-black px-5 py-3 rounded-full hover:bg-[#022D5E] transition-colors"
+              >
+                Lihat Semua →
+              </Link>
+            </div>
+
+            {/* Right: carousel (overflows intentionally so cards peek) */}
+            <div className="flex-1 min-w-0">
+              <UniversitySlider universities={sorted} />
+            </div>
+
+          </div>
         </section>
       )}
 
